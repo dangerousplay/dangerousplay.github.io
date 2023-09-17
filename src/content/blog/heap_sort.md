@@ -12,7 +12,7 @@ The algorithm uses the **heap** data structure introduced by **Williams** and ca
 
 ## The heap data structure
 
-Before diving into heapsort, let's get familiar with the heap data structure.
+Before diving into heapsort, let's get familiar with the **heap** data structure.
 The heap has properties that make it very suitable to build an efficient sorting algorithm.
 **Finding** the largest element in the **heap** is $O(1)$.
 **Finding** and **removing** the largest element from the heap takes $O(\log n)$ time.
@@ -24,7 +24,7 @@ The bottom level is filled from left to right, which implies the name **left-com
 It Is precisely the **left-complete** property that allows the heap to be implemented using a **contiguos array**, without the need of using pointers, which allows **heapsort** to be constant $O(1)$ in space complexity.
 
 The **max heap** property, also known as *heap order*, order the nodes by $key(Parent(n)) \ge key(n)$, which means that the value of each node is **greater** than or **equal to** the values of its child nodes.
-The **min** variant of the heap has the same structure, but the value of each node is **lesser** than or **equal to** the values of its child nodes.
+The **min** variant of the heap has the same property, but the value of each node is **lesser** than or **equal to** the values of its child nodes.
 
 Due to the property $key(Parent(n)) \ge key(n)$, the **root** node has the **largest** element in the heap or the **smallest** element if it's a min heap.
 However, some nodes in the tree that are in different branches and levels might not follow this property [^2].
@@ -42,7 +42,7 @@ The **(a)** binary tree is represented using the **(b)** contiguous array [^3].
 The number above each node is the index of that node in the array.
 We can observe that the indexes are increasing from top to bottom from left to right.
 The number inside each node is the key, or the value of the node.
-Given a node at index $i$, we can easily compute its parent, left and right child, using:
+Given a node at index $i$, we can easily compute its parent, left and right child:
 
 ```python
 def left(i):
@@ -55,9 +55,17 @@ def parent(i):
     return math.floor(i/2)
 ```
 
+#### Heapify
+
 To maintain the **max heap** property, the *heapify* algorithm is applied.
 Heapify receives a heap $A$ and an index $i$ to a subtree, which will be ordered by comparing and swapping the values of its child nodes.
+Heapify checks if the root node of the subtree is **lesser** than its childs.
+If it is, the nodes are swapped.
+This operation is also known as **sift down**.
+
 If there is a swap, heapify executes again at the subtree of the node that was swapped.
+This is needed because the subtree might not be a heap due to the swap.
+This can happen when the value of the node is smaller than its children.
 This animation made by CodesDope ilustrates heapify [^4]:
 
 ![](https://www.codesdope.com/staticroot/images/algorithm/heapsort1.gif)
@@ -125,7 +133,10 @@ which is the best time complexity for sorting algorithms that use comparisons.
 
 Heapsort is not a stable sort algorithm due to the $heapify$ procedure which is executed in every iteration.
 Nodes with the same keys can change their relative position.
-For example, the following heap when sorted:
+This can happen because the lowest node is swapped with the root node and $heapify$
+moves the node to the bottomost subtree which might not be the same. 
+We can observe it using an example.
+Consider the following heap:
 
 ```python
 heap = [
@@ -137,7 +148,11 @@ heap = [
    (5, "Robert"),
    (1, "Plato"),
 ]
+```
 
+When sorted using heapsort it outputs:
+
+```python
 heapsort(heap)
 
 # [
@@ -151,19 +166,21 @@ heapsort(heap)
 # ]
 ```
 
-We can observe that the relative position of Mart and Kage as well as Bob and John is swapped.
-This reveals that heapsort is indeed not stable.
+We can observe that the relative position of **Mart** and **Kage** as well as **Bob** and **John** are swapped.
+This reveals that **heapsort** is indeed not stable.
 
 
 ## Conclusion
 
 We explored **heapsort** an efficient, both in time $O(n \log n)$ and space $O(1)$ complexity,
 sorting algorithm which uses the heap data structure.
-Due to the **left-complete** property of a binary tree we learned that it is possible to use a contiguos array to represent it,
+Due to the **left-complete** property,
+we learned that it is possible to use a contiguos array to represent a binary tree,
 which allows heapsort to maintain a constant space complexity of $O(1)$.
 
-We explored the properties of the **left-complete** binary tree and how $heapify$ operation contribute to heapsort's time complexity of $O(n \log n)$.
-We also demonstrated the unstability of heapsort which is an important property of the sorting algorithms, which can be important depending on the use case.
+We explored the properties of the **left-complete** binary tree and how $heapify$ operation contributes to heapsort's time complexity of $O(n \log n)$.
+We also demonstrated the unstability of **heapsort**,
+which is an important property of the sorting algorithms, which can be relevant depending on the use case.
 
 I hope you have enjoyed the explanations, have a wonderful day.
 
