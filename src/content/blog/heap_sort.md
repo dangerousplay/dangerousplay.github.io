@@ -28,7 +28,7 @@ The **min** variant of the heap has the same property, but the value of each nod
 
 Due to the property $key(Parent(n)) \ge key(n)$, the **root** node has the **largest** element in the heap or the **smallest** element if it's a min heap.
 However, some nodes in the tree that are in different branches and levels might not follow this property [^2].
-The following figure illustrates the heap, a left-complete binary-tree [^3].
+The following figure illustrates the heap, a **left-complete** binary-tree [^3].
 
 ![alt Binary Tree](https://i.imgur.com/GkvM9Y2.png)
 
@@ -66,7 +66,7 @@ This operation is also known as **sift down**.
 If there is a swap, heapify executes again at the subtree of the node that was swapped.
 This is needed because the subtree might not be a heap due to the swap.
 This can happen when the value of the node is smaller than its children.
-This animation made by CodesDope ilustrates heapify [^4]:
+We can observe this behavior in this animation made by CodesDope which ilustrates heapify [^4]:
 
 ![](https://www.codesdope.com/staticroot/images/algorithm/heapsort1.gif)
 
@@ -131,12 +131,11 @@ which is the best time complexity for sorting algorithms that use comparisons.
 
 ### Stability
 
-Heapsort is not a stable sort algorithm due to the $heapify$ procedure which is executed in every iteration.
+**Heapsort** is not a stable sorting algorithm due to the $heapify$ procedure which is executed in every iteration.
 Nodes with the same keys can change their relative position.
-This can happen because the lowest node is swapped with the root node and $heapify$
-moves the node to the bottomost subtree which might not be the same. 
-We can observe it using an example.
-Consider the following heap:
+This can happen because the lowest node is swapped with the root node, and during $heapify$
+the node is moved to the bottomost subtree which might differ from node's initial position. 
+To illustrate this behavior, consider the following heap:
 
 ```python
 heap = [
