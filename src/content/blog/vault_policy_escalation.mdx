@@ -9,25 +9,45 @@ badge: "Security"
 How can we be certain that Hashicorp Vault holding precious information is truly secure?
 How can we trust that the policies won't have unintended, dangerous consequences tomorrow?
 
-The answer, lies not in hope, but in proof. 
-Not in guesswork, but in logic. 
+The answer, lies not in hope, but in proof.
 Today, I would like to take you on a journey into a world where we can use the pristine power of mathematics to verify our work and build systems that are provably trustworthy. 
 We will explore a beautiful concept called **Satisfiability Modulo Theories (SMT)** and use it to solve a very real-world challenge: securing HashiCorp Vault policies by denying privilege escalation.
 
-### A Conversation with an Oracle of Logic: Meet Z3
+### From Boolean Logic (SAT) to Rich Theories (SMT)
 
-Imagine you have access to an oracle. 
-This oracle doesn't predict the future, but it can tell you one thing with absolute certainty: whether a set of logical statements can be true at the same time. 
-This is the essence of an SMT solver. 
-It's a "truth-seeking machine."
+At the heart of **Satisfiability Modulo Theories (SMT)** is a simpler problem called **SAT**, or the Boolean Satisfiability Problem.
+
+- **SAT (The Foundation):** 
+Imagine you have a complex logical formula with only `True`/`False` variables, connected by `AND`, `OR`, and `NOT`. 
+For example: `(A OR B) AND (NOT A OR C)`. 
+The SAT problem asks: "Can you find a combination of `True` and `False` values for A, B, and C that makes the whole formula `True`?"
+A program that solves this is called a **SAT solver**.
+
+- **SMT (The Superpower):** SMT, or **Satisfiability Modulo Theories**, takes this to a whole new level. 
+It asks the same fundamental question but allows the variables to be much more than just `True` or `False`. 
+It reasons about them "modulo" (or "in the context of") different mathematical theories.
+
+This is exactly what you see in the article:
+*   Instead of just `A` and `B`, the variables are integers (`x`, `y`) and strings (`input_path`).
+*   Instead of just `OR` and `AND`, the "theories" are arithmetic (`x + y == 20`) and the theory of strings and regular expressions (`InRe(input_path, z3_regex)`).
+
+**Z3** is one of the world's most advanced **SMT solvers**. 
+It's the engine that understands these theories (integers, real numbers, arrays, strings, bitvectors, and more) and can answer that fundamental question: "Can a state of the world exist where all these complex constraints are satisfied?"
 
 We'll be using a friendly and powerful SMT solver from Microsoft called **Z3**. 
+
+### A Conversation with an Oracle of Logic
+
 Let's start with a simple conversation. 
 Imagine we tell Z3:
 
-> "Oh, wise Z3, I am thinking of two numbers, `x` and `y`. All I know is that `x + y = 20`, and also that `x` must be greater than `15`."
+> Oh, wise Z3, I am thinking of two numbers, `x` and `y`. All I know is that `x + y = 20`, and also that `x` must be greater than `15`.
 
-Can we find such numbers? Let's ask Z3 in its native tongue (Python).
+Can we find such numbers?
+
+Let's ask Z3 in its native tongue (Python).
+
+<img style="float: left;" src="/stickers/dangerous/wondering.png"/>
 
 ```python
 import z3
@@ -69,10 +89,9 @@ solver.add(y > 15) # Our new, impossible constraint
 print(solver.check())
 ```
 
-
 Z3 will now reply: `unsat`. 
 It has mathematically proven that no such numbers can possibly exist. 
-This power to prove both the possible and the impossible is what makes Z3 so profound.
+This power to **prove** both **the possible and the impossible** is what makes Z3 so profound.
 
 ### From Numbers to Paths: The Language of Vault
 
@@ -160,7 +179,7 @@ For example, a developer might want to add a new, specific rule but uses a broad
 
 How can we find this "ghost in the machine"? We can ask Z3 a very precise, philosophical question:
 
-> **"Wise Z3, can you find me a single path that is ALLOWED by the NEW policy, but was DENIED by the OLD policy?"**
+> **Wise Z3, can you find me a single path that is ALLOWED by the NEW policy, but was DENIED by the OLD policy?**
 
 If Z3 says `sat` and gives us an example, we have found a privilege escalation!
 
@@ -215,7 +234,7 @@ We have found the ghost.
 
 ### Completing the Picture: Paths and Capabilities
 
-Our logic can be made even richer. Vault policies have two parts: the `path` and the `capabilities` (like `read`, `write`, `delete`). 
+Our logic can be made even richer. Vault policies have at least two parts: the `path` and the `capabilities` (like `read`, `write`, `delete`). 
 A user needs both to match.
 
 Let's expand our model to check for an escalation where a user is granted a new capability on an existing path.
@@ -274,13 +293,6 @@ Examples of more complex policies that it can correctly identify privilege escal
         True
 ),
 
-# Test case: No escalation - more restrictive rules
-(
-        {"secret/app/*": ["read"]},
-        {"secret/app/db": ["read"]},
-        False
-),
-
 # Test case: Escalation - wider wildcard
 (
         {"secret/app/+": ["read"]},
@@ -305,6 +317,33 @@ Examples of more complex policies that it can correctly identify privilege escal
 You can see more examples of privilege escalation in [escalation tests](https://github.com/dangerousplay/vault-policy-checker/blob/master/python-poc/test_escalation.py)
 
 All the code was published on Github repository [dangerousplay/vault-policy-checker](https://github.com/dangerousplay/vault-policy-checker)
+
+
+### What Else Can We Do With This Power?
+
+The "truth-seeking" power of SMT solvers like Z3 is used across the entire field of computing. The Vault policy checker is just one example. Here are some others:
+
+- **Automated Test Case Generation:** 
+You can describe the logic of a function to Z3 and ask it to find inputs that trigger a specific bug. 
+For example: "Find me an integer `x` that causes this function to divide by zero."
+Z3 will try to solve for a value of `x` that makes the divisor expression equal to zero.
+
+- **Software and Hardware Verification:** 
+Before shipping a product, companies like Microsoft, Intel, and Amazon use SMT solvers to formally prove that their code or chip designs are free of certain classes of critical bugs, such as buffer overflows, deadlocks, or race conditions.
+
+- **Planning and Scheduling:** 
+You can model a complex scheduling problem (e.g., scheduling classes in rooms, tasks on factory machines) as a set of constraints and ask the solver: "Does a valid schedule exist that respects all constraints (time, resources, dependencies)?" 
+If it says `sat`, the model it provides *is* the valid schedule.
+
+- **Network Configuration Analysis:** 
+You can model all the firewall and routing rules in a network as logical statements. 
+Then you can ask the solver critical security questions like, "Is there any path by which an external actor can reach our internal database server?"
+
+- **Cryptography and Security:** 
+Researchers use SMT solvers to analyze cryptographic protocols and find logical flaws or vulnerabilities that might be missed by human inspection.
+
+In essence, if you can describe your problem in terms of rules and constraints, you can use an SMT solver to find solutions, prove that no solution exists, or find corner cases you never thought of. 
+It's a foundational tool for building more reliable, secure, and correct systems.
 
 ### Future Work
 
