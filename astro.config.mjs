@@ -2,9 +2,8 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
-// https://astro.build/config
 import remarkMath from "remark-math";
-import rehypeMathjaxChtml from 'rehype-mathjax'
+import rehypeMathjaxChtml from 'rehype-mathjax/chtml'
 
 
 import tailwindcss from '@tailwindcss/vite';
