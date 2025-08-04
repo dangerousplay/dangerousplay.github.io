@@ -17,6 +17,18 @@ const { image, title = SITE_TITLE, description = SITE_DESCRIPTION, includeSideba
     <ViewTransitions/>
   </head>
   <body>
+    {
+      /*
+      Configuration to use Z3 SMT Solver
+      https://github.com/Z3Prover/z3/issues/6768
+      */
+    }
+    <script is:inline src="/coi-serviceworker.js" />
+    <script is:inline src="/z3-built.js"/>
+    <script>
+      globalThis.global = { initZ3: globalThis.initZ3 };
+    </script>
+
     <div class="bg-base-100 drawer lg:drawer-open">
       <input id="my-drawer" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content bg-base-100">
