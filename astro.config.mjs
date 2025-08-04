@@ -1,18 +1,20 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 import remarkMath from "remark-math";
 import rehypeMathjaxChtml from 'rehype-mathjax/chtml'
 
 
 import tailwindcss from '@tailwindcss/vite';
+import react from '@astrojs/react';
 
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://dangerousplay.github.io',
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap(), react()],
 
   markdown: {
       remarkPlugins: [remarkMath],
@@ -26,6 +28,31 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [
+        tailwindcss(),
+        viteStaticCopy({
+            targets: [
+                {
+                    src: 'node_modules/z3-solver/build/z3-built.*',
+                    dest: ''
+                },
+                {
+                    src: 'node_modules/coi-serviceworker/coi-serviceworker.js',
+                    dest: ''
+                }
+            ]
+        }),
+        {
+          // Plugin code is from https://github.com/chaosprint/vite-plugin-cross-origin-isolation
+          name: "configure-response-headers",
+          configureServer: (server) => {
+            server.middlewares.use((_req, res, next) => {
+              res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+              res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+              next();
+            });
+          },
+        }
+    ]
   }
 });
