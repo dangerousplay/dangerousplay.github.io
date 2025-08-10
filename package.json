@@ -24,6 +24,7 @@
     "coi-serviceworker": "^0.1.7",
     "daisyui": "^5.0.50",
     "dayjs": "^1.11.13",
+    "hcl2-parser": "^1.0.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "rehype-mathjax": "^7.1.0",

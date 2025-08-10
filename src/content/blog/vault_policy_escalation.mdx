@@ -1,10 +1,16 @@
 ---
 title: "How to prevent Vault privilege escalation?"
 description: "How can we trust that the policies won't have unintended, dangerous consequences tomorrow?"
-pubDate: "Jul 28 2025"
-heroImage: "/posts/heap_sort_hero.webp"
-badge: "Security"
+pubDate: "Aug 10 2025"
+heroImage: "/posts/vault_policies_hero.avif"
+badge: "Hashicorp Vault"
 ---
+
+import {EscalationPolicyChecker} from "../../components/vault";
+
+<EscalationPolicyChecker client:load />
+
+### The Problem: Privilege Escalation
 
 How can we be certain that Hashicorp Vault holding precious information is truly secure?
 How can we trust that the policies won't have unintended, dangerous consequences tomorrow?
@@ -284,39 +290,324 @@ And Z3, our faithful oracle, will reveal the truth:
 
 It has precisely identified the escalation: the `write` capability was added to the `secret/app/db` path.
 
-Examples of more complex policies that it can correctly identify privilege escalation:
+### The Path Priority: Teaching the Oracle to Think Like Vault
+
+Our journey into proof has been fruitful.
+We've taught our Z3 oracle to understand paths and capabilities, and we've given it a profound question to find privilege escalation: `And(new_policy, Not(old_policy))`.
+
+But a new, more subtle question arises, one that strikes at the heart of intent and ambiguity.
+What happens when policies overlap?
+When a single request for a path like `secret/app/db` matches multiple rules, which one should apply?
+
+Imagine a policy set with these two rules:
+1. `secret/app/*` -> `["read"]`
+2. `secret/app/db` -> `["create"]`
+
+A developer requests `read` access to `secret/app/db`.
+Both rules match this path.
+Does the user get `read` access, `create` access, both, or none?
+A simple logical `OR` is insufficient; it would grant both, which is not how Vault behaves.
+
+This is not just a technical challenge; it's philosophical.
+How do we teach our logical oracle to infer the administrator's true intent?
+
+The answer lies in a principle that governs many human systems: **specificity**.
+Vault assumes that the most specific rule is the one that reflects the most specific intent.
+It has a clear, deterministic hierarchy to resolve this ambiguity, and to build a true verifier, we must encode this knowledge into our model.
+We must teach the oracle to think like Vault.
+
+Let's explore this hierarchy, rule by rule, as implemented in our `compare_path_priority` function.
+
+#### Rule 1: The First Wildcard
+
+**The Rule:** *"If the first wildcard (`+`) or glob (`*`) occurs earlier in P1, P1 is lower priority."* The longer the literal prefix of a path, the more specific its intent.
+
+**The Code:**
 ```python
-# Test case: Escalation - more specific wildcard in new rules
-(
-        {"secret/+/db": ["read"]},
-        {"secret/app/db": ["read", "write"]},
-        True
-),
-
-# Test case: Escalation - wider wildcard
-(
-        {"secret/app/+": ["read"]},
-        {"secret/app/*": ["read"]},
-        True
-),
-
-# Test case: Complex escalation - multiple rules
-(
-        {
-            "secret/app/db": ["read"],
-            "secret/app/logs": ["read", "write"]
-        },
-        {
-            "secret/app/db": ["read", "write"],
-            "secret/app/logs": ["read", "write"]
-        },
-        True
-),
+# From compare_path_priority
+first_wildcard1 = first_wildcard_pos(path1)
+first_wildcard2 = first_wildcard_pos(path2)
+if (first_wildcard1 is not None and first_wildcard2 is not None
+        and first_wildcard1 != first_wildcard2):
+    # The path with the wildcard appearing later has higher priority.
+    return int(first_wildcard1 - first_wildcard2)
 ```
 
-You can see more examples of privilege escalation in [escalation tests](https://github.com/dangerousplay/vault-policy-checker/blob/master/python-poc/test_escalation.py)
+**Example:**
+- `path1 = "secret/+/db"` (wildcard at index 7)
+- `path2 = "secret/app/*"` (wildcard at index 11)
+- **Result:** `secret/app/*` has higher priority because its wildcard appears later.
 
-All the code was published on Github repository [dangerousplay/vault-policy-checker](https://github.com/dangerousplay/vault-policy-checker)
+#### Rule 2: The Open-Ended Glob `*`
+
+**The Rule:** *"If P1 ends in `*` and P2 doesn't, P1 is lower priority."* A path ending in `*` is inherently open-ended and less specific than a path that names a final segment.
+
+**The Code:**
+```python
+# From compare_path_priority
+ends_with_star1 = path1.endswith('*')
+ends_with_star2 = path2.endswith('*')
+if ends_with_star1 != ends_with_star2:
+    return -1 if ends_with_star1 else 1
+```
+
+**Example:**
+- `path1 = "secret/app/*"`
+- `path2 = "secret/app/db"`
+- **Result:** `secret/app/db` has higher priority because it does not end with a `*`.
+
+#### Rule 3: The Cost of a `+`
+
+**The Rule:** *"If P1 has more + (wildcard) segments, P1 is lower priority."* Vault penalizes paths that use the segment-wildcard more frequently, favoring those with fewer "unknowns."
+
+**The Code:**
+```python
+# From compare_path_priority
+plus_count1 = path1.count('+')
+plus_count2 = path2.count('+')
+if plus_count1 != plus_count2:
+    return plus_count2 - plus_count1
+```
+
+**Example:**
+- `path1 = "secret/+/+/data"` (2 pluses)
+- `path2 = "secret/app/+/data"` (1 plus)
+- **Result:** `secret/app/+/data` has higher priority because it has fewer `+` wildcards.
+
+#### Rule 4 & 5: The Tie-Breakers
+
+**The Rule:** When ambiguity can no longer be resolved by structure, Vault falls back on two simple, deterministic tie-breakers: path length and then alphabetical order.
+
+**The Code:**
+```python
+# From compare_path_priority
+# Rule 4: Path length
+if len(path1) != len(path2):
+    return len(path1) - len(path2)
+
+# Rule 5: Lexicographic comparison
+if path1 < path2:
+    return -1
+```
+
+**Example (Length):**
+- `path1 = "secret/a"`
+- `path2 = "secret/long"`
+- **Result:** `secret/long` has higher priority because it is longer.
+
+**Example (Lexicographical):**
+- `path1 = "secret/a"`
+- `path2 = "secret/b"`
+- **Result:** `secret/b` has higher priority because "b" comes after "a" alphabetically.
+
+### Putting It All Together: A Complete Example
+
+Let's see how this intricate logic synthesizes into a correct verdict. Consider this policy:
+
+```python
+rules = {
+    "secret/*": ["read"],
+    "secret/app/db": ["create", "update"],
+    "secret/+/db": ["read", "delete"]
+}
+```
+
+A request comes in to `delete` the path `secret/app/db`. Which rule applies?
+1.  `secret/*` matches. It allows `read`.
+2.  `secret/app/db` matches. It allows `create`, `update`.
+3.  `secret/+/db` matches. It allows `read`, `delete`.
+
+Our `build_policy_allow` function first uses `compare_path_priority` to sort these matching paths from highest to lowest priority:
+1.  `secret/app/db` (longest, no wildcards)
+2.  `secret/+/db` (wildcard at index 7)
+3.  `secret/*` (wildcard at index 7, but ends in `*`)
+
+It then constructs a nested `If-Then-Else` expression in Z3 that mirrors this priority:
+
+```text
+# Conceptual Z3 logic
+If(input_path matches "secret/app/db",
+   # Highest priority rule applies
+   (input_cap == "create" or input_cap == "update"),
+
+   # Else, check the next rule
+   If(input_path matches "secret/+/db",
+      (input_cap == "read" or input_cap == "delete"),
+
+      # Else, check the last rule
+      If(input_path matches "secret/*",
+         (input_cap == "read"),
+         # Default deny if no rules match
+         False
+      )
+   )
+)
+```
+
+Now, let's run the full check in code to see the outcome.
+
+```python
+import z3
+# Assuming policy_checker.py is available
+from policy_checker import build_policy_allow
+
+# 1. Define the rules and the request
+rules = {
+    "secret/*": ["read"],
+    "secret/app/db": ["create", "update"],
+    "secret/+/db": ["read", "delete"]
+}
+request_path = "secret/app/db"
+request_cap = "delete"
+
+# 2. Create Z3 variables and the policy expression
+input_path = z3.String('path')
+input_cap = z3.String('cap')
+is_allowed = build_policy_allow(input_path, input_cap, rules)
+
+# 3. Formulate the question to Z3
+solver = z3.Solver()
+# Is it possible for the request to be allowed under the policy?
+solver.add(is_allowed)
+solver.add(input_path == request_path)
+solver.add(input_cap == request_cap)
+
+# 4. Ask the oracle and print the result
+result = solver.check()
+print(f"Is '{request_path}' with '{request_cap}' allowed? {result}")
+
+# --- Let's try another capability ---
+solver.reset()
+request_cap_denied = "read"
+solver.add(is_allowed)
+solver.add(input_path == request_path)
+solver.add(input_cap == request_cap_denied)
+result_denied = solver.check()
+print(f"Is '{request_path}' with '{request_cap_denied}' allowed? {result_denied}")
+```
+
+**Execution Output:**
+```
+Is 'secret/app/db' with 'delete' allowed? unsat
+Is 'secret/app/db' with 'read' allowed? unsat
+```
+
+The oracle correctly says `unsat` (not satisfiable) for both `delete` and `read`
+Why? Because for the path `secret/app/db`, the highest priority rule is the exact match `secret/app/db`, which *only* grants `create` and `update`.
+All other matching rules, like `secret/+/db` (which would have allowed `delete`), are ignored due to their lower priority.
+
+This is the power of encoding the knowledge of priority.
+Our verifier doesn't just see a collection of rules; it sees the hierarchy, the intent, and provides a provably correct answer based on the same logic Vault itself would use.
+
+### The Final Word: Explicit Deny
+
+So far, we have untangled the sophisticated path priority for `allow` rules.
+We've taught our oracle to weigh and measure paths, selecting the single most specific rule to grant capabilities.
+But Vault has one final, powerful tool in its arsenal: the `deny` capability.
+And its logic is simple.
+
+**An explicit `deny` on any matching path always takes precedence.**
+
+This rule acts as a definitive veto.
+It doesn't matter if a high-priority `allow` rule perfectly matches a path; if even a low-priority, broadly-scoped rule issues a `deny` for that same path, access is rejected.
+
+Think of it as two separate checks:
+1.  **The `allow` check:** Is there an `allow` rule that grants the requested capability? This involves the entire priority comparison we've detailed. Z3 finds the single highest-priority matching rule.
+2.  **The `deny` check:** Is there *any* `deny` rule that matches the requested path? This is a simple `OR` across all deny policies; priority is irrelevant.
+
+For a request to succeed, the answer to the first question must be "yes," **AND** the answer to the second must be "no."
+
+In Z3, this translates to a beautifully clean final formula:
+`And(is_allowed_by_priority, Not(is_denied_by_any))`
+
+Let's see this absolute power in action.
+
+#### Example 1: The Simple Veto
+
+This is the most straightforward case.
+-  **Policy:** `{"secret/app/db": ["read", "deny"]}`
+-  **Request:** `read` on `secret/app/db`.
+-  **Logic:** The path matches, and the capabilities include both `read` and `deny`. The `deny` acts as an instant override.
+-  **Result:** Access denied.
+
+#### Example 2: The Priority Override
+
+This is where the true power of `deny` becomes clear. It ignores the priority ladder that `allow` rules must climb.
+- **Policy:** `{"secret/app/*": ["deny"], "secret/app/db": ["read"]}`
+- **Request:** `read` on `secret/app/db`.
+- **Logic:**
+    - **Allow Check:** The `allow` rule `secret/app/db` is a higher priority for the path than `secret/app/*`. So, the `allow` check passes.
+    - **Deny Check:** The `deny` rule `secret/app/*` *also* matches the path `secret/app/db`.
+- **Result:** Because a matching `deny` rule exists, access is **denied**, even though the `allow` rule was more specific.
+
+### Grand Finale: Modeling the Veto in Code
+
+Let's construct a final, complete scenario that models this interaction.
+We will define a policy where a specific `allow` should be overridden by a general `deny`.
+
+```python
+import z3
+
+from policy_checker import build_policy_allow
+
+# 1. Define the rules and the contentious request
+rules = {
+    # Broad rule that denies everything under secret/app/
+    "secret/app/*": ["deny"],
+    # Specific rule that allows 'create' on a subpath
+    "secret/app/db": ["create"]
+}
+request_path = "secret/app/db"
+request_cap = "create"
+
+# 2. Create Z3 variables and the full policy expression
+input_path = z3.String('path')
+input_cap = z3.String('cap')
+# The build_policy_allow function now internally handles the
+# And(allow_logic, Not(deny_logic))
+is_allowed = build_policy_allow(input_path, input_cap, rules)
+
+# 3. Formulate the question to Z3
+solver = z3.Solver()
+# Is it possible for the 'create' request to be allowed?
+solver.add(is_allowed)
+solver.add(input_path == request_path)
+solver.add(input_cap == request_cap)
+
+# 4. Ask the oracle for its final verdict
+result = solver.check()
+print(f"Is '{request_path}' with '{request_cap}' allowed? {result}")
+
+# --- Let's check a path that ISN'T denied ---
+solver.reset()
+rules_new = {
+    "secret/app/*": ["deny"],
+    "secret/data/db": ["read"] # This path is not under secret/app/*
+}
+is_allowed_new = build_policy_allow(input_path, input_cap, rules_new)
+solver.add(is_allowed_new)
+solver.add(input_path == "secret/data/db")
+solver.add(input_cap == "read")
+result_new = solver.check()
+print(f"Is 'secret/data/db' with 'read' allowed? {result_new}")
+```
+
+**Execution Output:**
+```
+Is 'secret/app/db' with 'create' allowed? unsat
+Is 'secret/data/db' with 'read' allowed? sat
+```
+
+The oracle's conclusion is definitive and correct.
+The request to `create` at `secret/app/db` is `unsat` because, despite the high-priority `allow` rule, the lower-priority `deny` from `secret/app/*` casts the final, deciding vote.
+However, a request for a path completely untouched by the `deny` rule is correctly found to be `sat`.
+
+By modeling this final piece of Vault's logic, our verifier achieves a true, high-fidelity representation.
+It understands the nuances of specificity, the hierarchy of intention, and the absolute authority of a denial, allowing it to explore policy interactions with the same logical rigor as Vault itself.
+
+All the code was published on Github in the repository [dangerousplay/vault-policy-checker](https://github.com/dangerousplay/vault-policy-checker).
+
+You can see more examples of privilege escalation in the [escalation tests](https://github.com/dangerousplay/vault-policy-checker/blob/master/python-poc/test_escalation.py).
 
 
 ### What Else Can We Do With This Power?
@@ -355,5 +646,7 @@ It's a foundational tool for building more reliable, secure, and correct systems
 We began with a question of trust, and using pure logic we found an answer to a complex problem that was proved using math.
 We can proof that the new policy does not give more privileges than the current one removing any scenario for privilege escalation.
 Which is truly amazing considering how difficult it would be to proof the logic of an algorithm to do the same without using SMT.
+
+I hope you have enjoyed this journey. I'm always open to contribute, to receive feedback. If you have suggestions, improvements, I'm all ears.
 
 Have a wonderful day, shine bright ^^
