@@ -33,21 +33,15 @@ A program that solves this is called a **SAT solver**.
 It asks the same fundamental question but allows the variables to be much more than just `True` or `False`. 
 It reasons about them "modulo" (or "in the context of") different mathematical theories.
 
-This is exactly what you see in the article:
-*   Instead of just `A` and `B`, the variables are integers (`x`, `y`) and strings (`input_path`).
-*   Instead of just `OR` and `AND`, the "theories" are arithmetic (`x + y == 20`) and the theory of strings and regular expressions (`InRe(input_path, z3_regex)`).
-
-**Z3** is one of the world's most advanced **SMT solvers**. 
+**Z3** is one of the world's most advanced **SMT solvers** developed by Microsoft.
 It's the engine that understands these theories (integers, real numbers, arrays, strings, bitvectors, and more) and can answer that fundamental question: "Can a state of the world exist where all these complex constraints are satisfied?"
-
-We'll be using a friendly and powerful SMT solver from Microsoft called **Z3**. 
 
 ### A Conversation with an Oracle of Logic
 
 Let's start with a simple conversation. 
 Imagine we tell Z3:
 
-> Oh, wise Z3, I am thinking of two numbers, `x` and `y`. All I know is that `x + y = 20`, and also that `x` must be greater than `15`.
+> Oh, Z3, I am thinking of two numbers, `x` and `y`. All I know is that `x + y = 20`, and also that `x` must be greater than `15`.
 
 Can we find such numbers?
 
