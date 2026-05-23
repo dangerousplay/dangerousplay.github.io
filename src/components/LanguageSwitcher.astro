@@ -1,0 +1,68 @@
+---
+import type { Lang } from '../i18n/utils';
+import { languages, getAlternateLangUrl } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  pathname: string;
+}
+
+const { lang, pathname } = Astro.props;
+const otherLang: Lang = lang === 'en' ? 'pt' : 'en';
+const otherLabel = languages[otherLang];
+const otherUrl = getAlternateLangUrl(lang, pathname);
+---
+
+<a
+  href={otherUrl}
+  class="dp-lang-btn"
+  aria-label={`Switch to ${otherLang === 'pt' ? 'Portuguese' : 'English'}`}
+  title={`Switch to ${otherLang === 'pt' ? 'Português' : 'English'}`}
+  data-lang={otherLang}
+>
+  <!-- Soft globe icon -->
+  <svg viewBox="0 0 24 24" width="13" height="13" fill="none"
+       stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="9.5"/>
+    <path d="M12 2.5C10 6 9 9 9 12s1 6 3 9.5M12 2.5C14 6 15 9 15 12s-1 6-3 9.5"/>
+    <line x1="2.5" y1="9"  x2="21.5" y2="9"/>
+    <line x1="2.5" y1="15" x2="21.5" y2="15"/>
+  </svg>
+  <span>{otherLabel}</span>
+</a>
+
+<style>
+  .dp-lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    height: 38px;
+    padding: 0 0.7rem;
+    border-radius: var(--token-radius-md, 10px);
+    border: 1px solid var(--token-border);
+    background: var(--token-primary-soft);
+    color: var(--token-primary);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.045em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+    flex-shrink: 0;
+  }
+  .dp-lang-btn:hover {
+    background: var(--token-primary-soft);
+    border-color: var(--token-primary-muted);
+    transform: scale(1.04);
+  }
+  .dp-lang-btn:active { transform: scale(0.96); }
+</style>
+
+<script is:inline>
+  document.querySelectorAll('[data-lang]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      localStorage.setItem('dp-lang', el.getAttribute('data-lang'));
+    });
+  });
+</script>

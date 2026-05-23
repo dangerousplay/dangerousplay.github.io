@@ -1,0 +1,160 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TechBadge from "../components/TechBadge.astro";
+import { Icon } from "astro-icon/components";
+import { useTranslations } from "../i18n/utils";
+const lang = "en";
+const t = useTranslations(lang);
+---
+
+<BaseLayout title="Projects — Dangerousplay" sideBarActiveItemID="projects" lang={lang}>
+
+  <section class="mb-10 mt-6">
+    <div class="anim-fade-up eyebrow mb-3">{t('projects.eyebrow')}</div>
+    <h1 class="anim-fade-up-2 text-4xl font-extrabold text-1">{t('projects.title')}</h1>
+    <p class="anim-fade-up-3 mt-3 text-base body-text max-w-xl">{t('projects.subtitle')}</p>
+  </section>
+
+  <!-- Novatera featured -->
+  <section class="anim-fade-up-4 mb-10">
+    <div class="glass-card rounded-2xl p-7 relative overflow-hidden spotlight-cyan">
+      <div class="absolute -top-16 -right-16 w-64 h-64 rounded-full pointer-events-none spotlight-glow-cyan"></div>
+      <div class="absolute -bottom-12 -left-12 w-48 h-48 rounded-full pointer-events-none spotlight-glow-amber"></div>
+      <div class="relative z-10 flex flex-col md:flex-row md:items-start gap-6">
+        <div class="icon-tile pulse-cyan flex-shrink-0 w-14 h-14 rounded-2xl">
+          <Icon name="lucide:globe" />
+        </div>
+        <div class="flex-1">
+          <div class="flex flex-wrap items-center gap-2 mb-2">
+            <h2 class="text-2xl font-bold text-1">Novatera</h2>
+            <span class="status-tag cyan">{t('projects.novatera.active')}</span>
+            <span class="status-tag amber">{t('projects.novatera.philanthropy')}</span>
+          </div>
+          <p class="text-sm body-text mb-5">{t('projects.novatera.desc')}</p>
+          <a href="https://novatera.org" target="_blank" class="btn btn-primary btn-sm glow-cyan-sm gap-1.5">
+            {t('projects.novatera.cta')}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OSS & Tools -->
+  <section class="mb-12">
+    <div class="section-head">
+      <div class="brand-rule-amber"></div>
+      <h2 class="text-xl font-bold">{t('projects.oss.title')}</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div class="glass-card rounded-xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-tile w-9 h-9 rounded-lg flex-shrink-0"><Icon name="simple-icons:vault" /></div>
+          <h3 class="font-bold text-base text-1 leading-tight">{t('projects.vault.title')}</h3>
+        </div>
+        <p class="text-sm body-text flex-1">{t('projects.vault.desc')}</p>
+        <div class="flex flex-wrap gap-1.5">
+          <TechBadge name="HashiCorp Vault" />
+          <TechBadge name="Security" />
+          <TechBadge name="React" />
+        </div>
+        <a href="/blog/vault_policy_escalation" class="btn btn-outline btn-xs w-fit gap-1.5 read-btn">
+          {t('projects.read')}
+        </a>
+      </div>
+
+      <div class="glass-card glass-card-amber rounded-xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-tile amber w-9 h-9 rounded-lg flex-shrink-0"><Icon name="lucide:binary" /></div>
+          <h3 class="font-bold text-base text-1 leading-tight">{t('projects.heap.title')}</h3>
+        </div>
+        <p class="text-sm body-text flex-1">{t('projects.heap.desc')}</p>
+        <div class="flex flex-wrap gap-1.5">
+          <TechBadge name="Algorithms" variant="amber" />
+          <TechBadge name="Computer Science" variant="amber" />
+        </div>
+        <a href="/blog/heap_sort" class="btn btn-outline btn-xs w-fit gap-1.5 read-btn amber">
+          {t('projects.read')}
+        </a>
+      </div>
+
+      <div class="glass-card rounded-xl p-5 flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="icon-tile w-9 h-9 rounded-lg flex-shrink-0"><Icon name="lucide:brain" /></div>
+          <h3 class="font-bold text-base text-1 leading-tight">{t('projects.z3.title')}</h3>
+        </div>
+        <p class="text-sm body-text flex-1">{t('projects.z3.desc')}</p>
+        <div class="flex flex-wrap gap-1.5">
+          <TechBadge name="Formal Methods" />
+          <TechBadge name="Z3" />
+          <TechBadge name="WebAssembly" />
+        </div>
+      </div>
+
+      <div class="more-card rounded-xl p-5 flex flex-col justify-center items-center text-center">
+        <Icon name="lucide:sparkles" class="w-6 h-6 mb-2 opacity-40 muted-text" />
+        <p class="text-sm font-medium body-text">{t('projects.more')}</p>
+        <p class="text-xs mt-1 muted-text">{t('projects.more.sub')}</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mb-6">
+    <div class="glass-card glass-card-amber rounded-2xl p-7 text-center relative overflow-hidden">
+      <div class="absolute inset-0 pointer-events-none spotlight-glow-amber-bottom"></div>
+      <div class="relative z-10">
+        <div class="icon-tile amber w-12 h-12 rounded-xl mx-auto mb-3"><Icon name="lucide:handshake" /></div>
+        <h2 class="text-xl font-bold text-1 mb-2">{t('projects.cta.title')}</h2>
+        <p class="text-sm body-text mb-5 max-w-sm mx-auto">{t('projects.cta.desc')}</p>
+        <div class="flex flex-wrap justify-center gap-3">
+          <a href="mailto:dangerousplay715@gmail.com" class="btn btn-secondary btn-sm glow-amber-sm gap-1.5">
+            <Icon name="lucide:mail" class="w-4 h-4" /> {t('projects.cta.btn')}
+          </a>
+          <a href="https://github.com/dangerousplay" target="_blank" class="btn btn-ghost btn-sm border border-white/10 gap-1.5">
+            <Icon name="simple-icons:github" class="w-4 h-4" /> GitHub
+          </a>
+          <a href="https://twitter.com/dangerousplayt" target="_blank" class="btn btn-ghost btn-sm border border-white/10 gap-1.5">
+            <Icon name="simple-icons:x" class="w-4 h-4" /> Twitter
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .spotlight-cyan { border-color: var(--token-primary-muted); }
+  .spotlight-glow-cyan { background: radial-gradient(circle, var(--token-primary-soft) 0%, transparent 65%); }
+  .spotlight-glow-amber { background: radial-gradient(circle, var(--token-secondary-soft) 0%, transparent 65%); }
+  .spotlight-glow-amber-bottom { background: radial-gradient(ellipse at 50% 110%, var(--token-secondary-soft) 0%, transparent 60%); }
+
+  .status-tag {
+    font-size: 0.7rem; font-weight: 600; line-height: 1;
+    padding: 0.28rem 0.6rem; border-radius: 999px;
+    border: 1px solid var(--token-border);
+    background: var(--token-primary-soft);
+    color: var(--token-primary);
+  }
+  .status-tag.amber {
+    border-color: var(--token-border-warm);
+    background: var(--token-secondary-soft);
+    color: var(--token-secondary);
+  }
+
+  .read-btn {
+    border-color: var(--token-primary-muted);
+    color: var(--token-primary);
+    background: transparent;
+  }
+  .read-btn:hover { background: var(--token-primary-soft); border-color: var(--token-primary); }
+  .read-btn.amber { border-color: var(--token-secondary-muted); color: var(--token-secondary); }
+  .read-btn.amber:hover { background: var(--token-secondary-soft); border-color: var(--token-secondary); }
+
+  .more-card {
+    border: 1px dashed var(--token-border);
+    background: var(--token-primary-faint);
+  }
+</style>

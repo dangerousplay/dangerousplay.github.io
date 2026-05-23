@@ -3,44 +3,161 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SideBar from "../components/SideBar.astro";
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 
 import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
+import type { Lang } from '../i18n/utils';
+import { getLangFromUrl } from '../i18n/utils';
 
-const { image, title = SITE_TITLE, description = SITE_DESCRIPTION, includeSidebar = true, sideBarActiveItemID } = Astro.props;
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  includeSidebar?: boolean;
+  sideBarActiveItemID?: string;
+  lang?: Lang;
+}
+
+const {
+  image,
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+  includeSidebar = true,
+  sideBarActiveItemID,
+} = Astro.props;
+
+const lang: Lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
+const htmlLang = lang === 'pt' ? 'pt-BR' : 'en';
 ---
 
 <!DOCTYPE html>
-<html lang="en" data-theme="lofi">
+<html lang={htmlLang} data-theme="lion">
   <head>
+    <!-- Theme persistence: apply before render to avoid FOUC and re-apply
+         after every Astro view transition (the swapped <html> resets
+         data-theme to its server-rendered default). -->
+    <script is:inline>
+      (function () {
+        function apply() {
+          var saved = localStorage.getItem('dp-theme');
+          if (saved === 'lion-light' || saved === 'lion') {
+            document.documentElement.setAttribute('data-theme', saved);
+          }
+        }
+        apply();
+        document.addEventListener('astro:after-swap', apply);
+      })();
+    </script>
     <BaseHead title={title} description={description} image={image} />
-    <ViewTransitions/>
+    <ClientRouter/>
   </head>
   <body>
-    {
-      /*
-      Configuration to use Z3 SMT Solver
-      https://github.com/Z3Prover/z3/issues/6768
-      */
-    }
+    <!-- Browser language auto-redirect (first visit only) -->
+    <script is:inline>
+      (function () {
+        if (localStorage.getItem('dp-lang-detected')) return;
+        localStorage.setItem('dp-lang-detected', '1');
+        var isPt = (navigator.language || '').toLowerCase().startsWith('pt');
+        var onPt  = location.pathname.startsWith('/pt');
+        if (isPt && !onPt) {
+          location.replace('/pt' + (location.pathname === '/' ? '/' : location.pathname));
+        }
+      })();
+    </script>
+
+    <!-- Ambient background layer -->
+    <div class="ambient-layer" aria-hidden="true">
+      <canvas id="particles"></canvas>
+      <div class="orb-cyan"></div>
+      <div class="orb-amber"></div>
+      <div class="orb-purple"></div>
+    </div>
+
+    {/* Z3 SMT Solver — https://github.com/Z3Prover/z3/issues/6768 */}
     <script is:inline src="/coi-serviceworker.js" />
     <script is:inline src="/z3-built.js"/>
     <script>
       globalThis.global = { initZ3: globalThis.initZ3 };
     </script>
 
-    <div class="bg-base-100 drawer lg:drawer-open">
+    <div class="site-wrapper drawer lg:drawer-open">
       <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-      <div class="drawer-content bg-base-100">
-        <Header title={SITE_TITLE} />
+      <div class="drawer-content">
+        <Header title={SITE_TITLE} lang={lang} pathname={Astro.url.pathname} />
         <div class="md:flex md:justify-center">
           <main class="p-6 pt-10 lg:max-w-[900px] max-w-screen">
             <slot />
           </main>
         </div>
-        <Footer />
+        <Footer lang={lang} />
       </div>
-      {includeSidebar && <SideBar sideBarActiveItemID={sideBarActiveItemID} />}
+      {includeSidebar && (
+        <SideBar
+          sideBarActiveItemID={sideBarActiveItemID}
+          lang={lang}
+          pathname={Astro.url.pathname}
+        />
+      )}
     </div>
+
+    <!-- Particle animation -->
+    <script is:inline>
+      (function () {
+        var canvas = document.getElementById('particles');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var W, H;
+
+        function resize() {
+          W = canvas.width  = window.innerWidth;
+          H = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        var CYAN  = '6,214,240';
+        var AMBER = '230,165,45';
+
+        var particles = [];
+        for (var i = 0; i < 90; i++) {
+          particles.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: Math.random() * 1.4 + 0.4,
+            vy: -(Math.random() * 0.35 + 0.08),
+            vx: (Math.random() - 0.5) * 0.18,
+            opacity: Math.random() * 0.5 + 0.05,
+            dOpacity: (Math.random() * 0.004 + 0.001) * (Math.random() > 0.5 ? 1 : -1),
+            color: Math.random() > 0.45 ? CYAN : AMBER,
+          });
+        }
+
+        function getMaxOpacity() {
+          var theme = document.documentElement.getAttribute('data-theme');
+          return theme === 'lion-light' ? 0.30 : 0.65;
+        }
+
+        function draw() {
+          ctx.clearRect(0, 0, W, H);
+          var maxOp = getMaxOpacity();
+          for (var j = 0; j < particles.length; j++) {
+            var p = particles[j];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.opacity += p.dOpacity;
+            if (p.opacity > maxOp || p.opacity < 0.02) p.dOpacity *= -1;
+            if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
+            if (p.x < -10) p.x = W + 10;
+            if (p.x > W + 10) p.x = -10;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(' + p.color + ',' + p.opacity + ')';
+            ctx.fill();
+          }
+          requestAnimationFrame(draw);
+        }
+        draw();
+      })();
+    </script>
   </body>
 </html>

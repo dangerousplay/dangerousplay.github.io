@@ -1,22 +1,22 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import TimeLineElement from "../components/cv/TimeLine.astro";
-import TechStack from "../components/TechStack.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TimeLineElement from "../../components/cv/TimeLine.astro";
+import TechStack from "../../components/TechStack.astro";
 import { Icon } from "astro-icon/components";
-import { useTranslations } from "../i18n/utils";
+import { useTranslations } from "../../i18n/utils";
 
-const lang = "en";
+const lang = "pt";
 const t = useTranslations(lang);
 ---
 
-<BaseLayout title="Resume — Dangerousplay" sideBarActiveItemID="cv" lang={lang}>
+<BaseLayout title="Currículo — Dangerousplay" sideBarActiveItemID="cv" lang={lang}>
 
   <section class="mb-10 mt-6">
     <div class="anim-fade-up eyebrow mb-3">{t('cv.eyebrow')}</div>
     <h1 class="anim-fade-up-2 text-4xl font-extrabold text-1">{t('cv.title')}</h1>
   </section>
 
-  <!-- Profile -->
+  <!-- Perfil -->
   <section class="anim-fade-up-3 mb-12">
     <div class="section-head">
       <div class="icon-tile w-9 h-9 rounded-lg"><Icon name="lucide:user-round" /></div>
@@ -25,53 +25,35 @@ const t = useTranslations(lang);
     <p class="body-text max-w-2xl">{t('cv.profile.body')}</p>
   </section>
 
-  <!-- Education -->
+  <!-- Educação -->
   <section class="mb-12">
     <div class="section-head">
       <div class="icon-tile w-9 h-9 rounded-lg"><Icon name="lucide:graduation-cap" /></div>
       <h2 class="text-2xl font-bold">{t('cv.education')}</h2>
     </div>
     <div class="time-line-container grid gap-4">
-      <TimeLineElement
-        title="Title Name"
-        subtitle="[start year] to [end year] at [Study Center Name], [City], [Country]"
-      />
-      <TimeLineElement
-        title="Title Name"
-        subtitle="[start year] to [end year] at [Study Center Name], [City], [Country]"
-      />
+      <TimeLineElement title="Título do Curso" subtitle="[ano início] a [ano fim] na [Instituição], [Cidade], [País]" />
+      <TimeLineElement title="Título do Curso" subtitle="[ano início] a [ano fim] na [Instituição], [Cidade], [País]" />
     </div>
   </section>
 
-  <!-- Experience -->
+  <!-- Experiência -->
   <section class="mb-12">
     <div class="section-head">
       <div class="icon-tile amber w-9 h-9 rounded-lg"><Icon name="lucide:briefcase" /></div>
       <h2 class="text-2xl font-bold">{t('cv.experience')}</h2>
     </div>
     <div class="time-line-container">
-      <TimeLineElement
-        title="Job Title at Project or Company Name"
-        subtitle="From [Start Date] to [End Date] at [Company], [City], [Country]"
-      >
-        Describe a key responsibility, the systems you owned, and the impact you had.
+      <TimeLineElement title="Cargo na Empresa" subtitle="De [Data Início] a [Data Fim] na [Empresa], [Cidade], [País]">
+        Descreva uma responsabilidade chave, os sistemas que você manteve e o impacto que teve.
       </TimeLineElement>
-      <TimeLineElement
-        title="Job Title at Project or Company Name"
-        subtitle="From [Start Date] to [End Date] at [Company], [City], [Country]"
-      >
-        Describe a key responsibility, the systems you owned, and the impact you had.
-      </TimeLineElement>
-      <TimeLineElement
-        title="Job Title at Project or Company Name"
-        subtitle="From [Start Date] to [End Date] at [Company], [City], [Country]"
-      >
-        Describe a key responsibility, the systems you owned, and the impact you had.
+      <TimeLineElement title="Cargo na Empresa" subtitle="De [Data Início] a [Data Fim] na [Empresa], [Cidade], [País]">
+        Descreva uma responsabilidade chave, os sistemas que você manteve e o impacto que teve.
       </TimeLineElement>
     </div>
   </section>
 
-  <!-- Certifications -->
+  <!-- Certificações -->
   <section class="mb-12">
     <div class="section-head">
       <div class="icon-tile w-9 h-9 rounded-lg"><Icon name="lucide:award" /></div>
@@ -80,16 +62,12 @@ const t = useTranslations(lang);
     <ul class="cert-list grid gap-2 max-w-xl">
       <li>
         <Icon name="lucide:badge-check" class="cert-icon" />
-        <a href="#" target="_blank">Certification Name (with link)</a>
-      </li>
-      <li>
-        <Icon name="lucide:badge-check" class="cert-icon" />
-        <a href="#" target="_blank">Certification Name (with link)</a>
+        <a href="#" target="_blank">Nome da Certificação (com link)</a>
       </li>
     </ul>
   </section>
 
-  <!-- Skills -->
+  <!-- Habilidades -->
   <section class="mb-8">
     <div class="section-head">
       <div class="icon-tile amber w-9 h-9 rounded-lg"><Icon name="lucide:wrench" /></div>

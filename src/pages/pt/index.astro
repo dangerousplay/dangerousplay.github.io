@@ -1,13 +1,13 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import HorizontalCard from "../components/HorizontalCard.astro";
-import TechStack from "../components/TechStack.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import HorizontalCard from "../../components/HorizontalCard.astro";
+import TechStack from "../../components/TechStack.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
-import { useTranslations } from "../i18n/utils";
+import { useTranslations } from "../../i18n/utils";
 
-const lang = "en";
+const lang = "pt";
 const t = useTranslations(lang);
 
 const posts = (await getCollection("blog")).sort(
@@ -18,13 +18,11 @@ const last_posts = posts.slice(0, 3);
 
 <BaseLayout sideBarActiveItemID="home" lang={lang}>
 
-  <!-- ══════════════════════════════════════════════════════════
-       HERO — split layout: avatar left, text right
-  ══════════════════════════════════════════════════════════ -->
+  <!-- ══ HERO ══ -->
   <section class="pb-10 mt-4">
     <div class="hero-grid">
 
-      <!-- Avatar column -->
+      <!-- Avatar -->
       <div class="flex flex-col items-center gap-5 anim-fade-up">
         <div class="hero-avatar-float">
           <div class="hero-avatar-frame">
@@ -38,8 +36,6 @@ const last_posts = posts.slice(0, 3);
             />
           </div>
         </div>
-
-        <!-- Social links under avatar (desktop only) -->
         <div class="hidden md:flex items-center gap-2">
           <a href="https://github.com/dangerousplay" target="_blank"
              class="social-icon-pill" aria-label="GitHub">
@@ -54,52 +50,41 @@ const last_posts = posts.slice(0, 3);
         </div>
       </div>
 
-      <!-- Text column -->
+      <!-- Text -->
       <div class="flex flex-col justify-center">
-        <!-- Status pill -->
         <div class="anim-fade-up status-pill mb-4">
           <span class="status-dot"></span>
           {t('home.status')}
         </div>
 
-        <!-- Eyebrow -->
         <div class="anim-fade-up-2 eyebrow mb-3">{t('home.eyebrow')}</div>
 
-        <!-- Name -->
         <h1 class="anim-fade-up-3 font-extrabold leading-tight text-1" style="font-size: clamp(2rem, 5vw, 3.25rem);">
           <span class="opacity-50">{t('home.greeting')}</span><br />
           <span class="relative inline-block text-brand-amber">
             Dangerousplay
-            <span
-              class="absolute inset-0 blur-3xl opacity-20 pointer-events-none"
-              style="background: var(--token-secondary);"
-            ></span>
+            <span class="absolute inset-0 blur-3xl opacity-20 pointer-events-none"
+                  style="background: var(--token-secondary);"></span>
           </span>
         </h1>
 
-        <!-- Role pills -->
         <div class="anim-fade-up-4 role-pills">
-          <span class="role-pill">Philosopher</span>
-          <span class="role-pill amber">Platform Engineer</span>
-          <span class="role-pill">Philanthropist</span>
-          <span class="role-pill amber">Furry Lion 🦁</span>
+          <span class="role-pill">Filósofo</span>
+          <span class="role-pill amber">Engenheiro de Plataforma</span>
+          <span class="role-pill">Filantropo</span>
+          <span class="role-pill amber">Leão Furry 🦁</span>
         </div>
 
-        <!-- Bio -->
-        <p class="anim-fade-up-5 text-base body-text max-w-lg">
-          {t('home.bio')}
-        </p>
+        <p class="anim-fade-up-5 text-base body-text max-w-lg">{t('home.bio')}</p>
 
-        <!-- Quick facts -->
         <div class="anim-fade-up-5 quick-facts">
           <span class="quick-fact"><Icon name="lucide:map-pin" /> {t('home.facts.location')}</span>
           <span class="quick-fact"><Icon name="lucide:languages" /> {t('home.facts.languages')}</span>
           <span class="quick-fact"><Icon name="lucide:shield-check" /> {t('home.facts.focus')}</span>
         </div>
 
-        <!-- CTAs -->
         <div class="anim-fade-up-6 mt-6 flex flex-wrap gap-3">
-          <a href="/projects/" class="btn btn-secondary btn-sm pulse-amber font-semibold gap-1.5">
+          <a href="/pt/projects/" class="btn btn-secondary btn-sm pulse-amber font-semibold gap-1.5">
             <Icon name="lucide:sparkles" class="w-4 h-4" />
             {t('home.cta.projects')}
           </a>
@@ -108,20 +93,12 @@ const last_posts = posts.slice(0, 3);
             <Icon name="lucide:globe" class="w-4 h-4" />
             {t('home.cta.novatera')}
           </a>
-          <a href="https://github.com/dangerousplay" target="_blank"
-             class="btn btn-ghost btn-sm border border-white/10 hover:border-white/25 md:hidden gap-1.5">
-            <Icon name="simple-icons:github" class="w-4 h-4" />
-            GitHub
-          </a>
         </div>
       </div>
-
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════════════════════
-       TECH STACK
-  ══════════════════════════════════════════════════════════ -->
+  <!-- ══ TECH STACK ══ -->
   <section class="anim-fade mb-12">
     <div class="shimmer-line mb-8"></div>
     <div class="eyebrow mb-2">{t('home.tech.eyebrow')}</div>
@@ -130,9 +107,7 @@ const last_posts = posts.slice(0, 3);
     <TechStack />
   </section>
 
-  <!-- ══════════════════════════════════════════════════════════
-       NOVATERA SPOTLIGHT
-  ══════════════════════════════════════════════════════════ -->
+  <!-- ══ NOVATERA ══ -->
   <section class="mb-12">
     <div class="glass-card rounded-2xl p-6 relative overflow-hidden spotlight-cyan">
       <div class="absolute -top-14 -right-14 w-56 h-56 rounded-full pointer-events-none spotlight-glow-cyan"></div>
@@ -153,9 +128,7 @@ const last_posts = posts.slice(0, 3);
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════════════════════
-       PILLARS
-  ══════════════════════════════════════════════════════════ -->
+  <!-- ══ PILLARS ══ -->
   <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-14">
     <div class="glass-card glass-card-amber rounded-xl p-5">
       <div class="icon-tile amber w-10 h-10 rounded-lg mb-3"><Icon name="lucide:brain" /></div>
@@ -174,18 +147,15 @@ const last_posts = posts.slice(0, 3);
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════════════════════
-       LATEST BLOG
-  ══════════════════════════════════════════════════════════ -->
+  <!-- ══ BLOG ══ -->
   <section class="mb-12">
     <div class="flex items-center justify-between mb-6">
       <div class="flex items-center gap-3">
         <div class="brand-rule"></div>
         <h2 class="text-2xl font-bold text-1">{t('home.blog.title')}</h2>
       </div>
-      <a href="/blog/" class="text-sm font-medium hover:underline text-brand">{t('home.blog.all')}</a>
+      <a href="/pt/blog/" class="text-sm font-medium hover:underline text-brand">{t('home.blog.all')}</a>
     </div>
-
     <div class="flex flex-col gap-2">
       {last_posts.map((post) => (
         <div class="glass-card rounded-xl overflow-hidden">
@@ -202,9 +172,7 @@ const last_posts = posts.slice(0, 3);
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════════════════════
-       CONNECT CTA
-  ══════════════════════════════════════════════════════════ -->
+  <!-- ══ CTA ══ -->
   <section class="mb-8">
     <div class="glass-card glass-card-amber rounded-2xl p-7 text-center relative overflow-hidden">
       <div class="absolute inset-0 pointer-events-none spotlight-glow-amber-bottom"></div>
@@ -232,13 +200,9 @@ const last_posts = posts.slice(0, 3);
 
 <style>
   .social-icon-pill {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.22rem 0.6rem;
-    border-radius: 999px;
+    display: flex; align-items: center; gap: 5px;
+    font-size: 0.75rem; font-weight: 600;
+    padding: 0.22rem 0.6rem; border-radius: 999px;
     border: 1px solid var(--token-border);
     background: var(--token-primary-soft);
     color: var(--token-text-2);
@@ -250,27 +214,17 @@ const last_posts = posts.slice(0, 3);
     border-color: var(--token-primary-muted);
   }
 
-  /* Status pill — soft glowing "available" indicator */
   .status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    width: fit-content;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    padding: 0.28rem 0.7rem;
-    border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    width: fit-content; font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.02em; padding: 0.28rem 0.7rem; border-radius: 999px;
     border: 1px solid var(--token-border-warm);
     background: var(--token-secondary-soft);
     color: var(--token-secondary);
   }
   .status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
+    width: 7px; height: 7px; border-radius: 50%;
     background: var(--token-secondary);
-    box-shadow: 0 0 0 0 var(--token-secondary);
     animation: status-ping 2.2s ease-out infinite;
   }
   @keyframes status-ping {
@@ -279,33 +233,14 @@ const last_posts = posts.slice(0, 3);
     100% { box-shadow: 0 0 0 0 transparent; }
   }
 
-  /* Quick facts row */
-  .quick-facts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
+  .quick-facts { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
   .quick-fact {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: var(--token-text-3);
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.78rem; font-weight: 500; color: var(--token-text-3);
   }
-  .quick-fact svg {
-    width: 0.95rem;
-    height: 0.95rem;
-    color: var(--token-primary);
-  }
+  .quick-fact svg { width: 0.95rem; height: 0.95rem; color: var(--token-primary); }
 
-  /* Spotlight decorative glows (token-aware) */
   .spotlight-cyan { border-color: var(--token-primary-muted); }
-  .spotlight-glow-cyan {
-    background: radial-gradient(circle, var(--token-primary-soft) 0%, transparent 65%);
-  }
-  .spotlight-glow-amber-bottom {
-    background: radial-gradient(ellipse at 50% 110%, var(--token-secondary-soft) 0%, transparent 60%);
-  }
+  .spotlight-glow-cyan { background: radial-gradient(circle, var(--token-primary-soft) 0%, transparent 65%); }
+  .spotlight-glow-amber-bottom { background: radial-gradient(ellipse at 50% 110%, var(--token-secondary-soft) 0%, transparent 60%); }
 </style>

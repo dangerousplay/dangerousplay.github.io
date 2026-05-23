@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import HorizontalCard from "../../../components/HorizontalCard.astro";
+import { getCollection } from "astro:content";
+import { useTranslations } from "../../../i18n/utils";
+
+export async function getStaticPaths({ paginate }) {
+  const posts = await getCollection("blog");
+  posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return paginate(posts, { pageSize: 10 });
+}
+
+const lang = "pt";
+const t = useTranslations(lang);
+const { page } = Astro.props;
+---
+
+<BaseLayout title="Blog — Dangerousplay" sideBarActiveItemID="blog" lang={lang}>
+  <div class="mb-8 mt-4">
+    <div class="flex items-center gap-2 mb-3">
+      <div class="h-px w-6" style="background: oklch(79% 0.135 200);"></div>
+      <span class="text-xs font-semibold tracking-[0.2em] uppercase"
+            style="color: oklch(79% 0.135 200);">Dangerousplay</span>
+    </div>
+    <h1 class="text-4xl font-extrabold text-base-content">{t('blog.title')}</h1>
+  </div>
+
+  {page.data.length === 0 ? (
+    <div class="glass-card rounded-xl p-6 border-l-4 border-secondary">
+      <p class="font-bold">{t('blog.empty')}</p>
+    </div>
+  ) : (
+    <div class="flex flex-col gap-2">
+      {page.data.map((post) => (
+        <div class="glass-card rounded-xl overflow-hidden">
+          <HorizontalCard
+            title={post.data.title}
+            img={post.data.heroImage}
+            desc={post.data.description}
+            url={"/blog/" + post.id.replace(/\.[^.]+$/, '')}
+            target="_self"
+            badge={post.data.badge}
+          />
+        </div>
+      ))}
+    </div>
+  )}
+
+  <div class="flex justify-between mt-8">
+    {page.url.prev ? (
+      <a href={"/pt" + page.url.prev} class="btn btn-ghost">
+        ← {t('blog.recent')}
+      </a>
+    ) : <div />}
+    {page.url.next ? (
+      <a href={"/pt" + page.url.next} class="btn btn-ghost">
+        {t('blog.older')} →
+      </a>
+    ) : <div />}
+  </div>
+</BaseLayout>
