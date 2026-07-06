@@ -32,8 +32,14 @@ const t = useTranslations(lang);
       <h2 class="text-2xl font-bold">{t('cv.education')}</h2>
     </div>
     <div class="time-line-container grid gap-4">
-      <TimeLineElement title="Título do Curso" subtitle="[ano início] a [ano fim] na [Instituição], [Cidade], [País]" />
-      <TimeLineElement title="Título do Curso" subtitle="[ano início] a [ano fim] na [Instituição], [Cidade], [País]" />
+      <TimeLineElement
+        title="Pós-graduação — Liderança para Inovação"
+        subtitle="Unilasalle · Rio Grande do Sul, Brasil"
+      />
+      <TimeLineElement
+        title="Bacharelado em Ciência da Computação"
+        subtitle="Formado em 2023 · Rio Grande do Sul, Brasil"
+      />
     </div>
   </section>
 
@@ -44,27 +50,39 @@ const t = useTranslations(lang);
       <h2 class="text-2xl font-bold">{t('cv.experience')}</h2>
     </div>
     <div class="time-line-container">
-      <TimeLineElement title="Cargo na Empresa" subtitle="De [Data Início] a [Data Fim] na [Empresa], [Cidade], [País]">
-        Descreva uma responsabilidade chave, os sistemas que você manteve e o impacto que teve.
+      <TimeLineElement
+        title="Engenheiro de Plataforma Especialista · Sicredi"
+        subtitle="Jan 2026 – Presente · Rio Grande do Sul, Brasil"
+      >
+        Engenharia de plataforma, DevOps e confiabilidade ao longo do ciclo de entrega
+        de software. Projeto sistemas escaláveis e observáveis de ponta a ponta —
+        Kubernetes e contêineres, CI/CD, infraestrutura como código e observabilidade
+        com Prometheus, Grafana e OpenTelemetry.
       </TimeLineElement>
-      <TimeLineElement title="Cargo na Empresa" subtitle="De [Data Início] a [Data Fim] na [Empresa], [Cidade], [País]">
-        Descreva uma responsabilidade chave, os sistemas que você manteve e o impacto que teve.
+      <TimeLineElement
+        title="Desenvolvedor DevOps / Engenheiro de Software · Sicredi"
+        subtitle="Jun 2022 – Presente · Rio Grande do Sul, Brasil"
+      >
+        Desenvolvimento de automações e aplicações para gerenciar a infraestrutura e
+        todo o ciclo de desenvolvimento de software. Serviços de backend e ferramentas
+        de plataforma em Java, Kotlin e Go, rodando em Kubernetes.
+      </TimeLineElement>
+      <TimeLineElement
+        title="Desenvolvedor de Software DevOps · Sicredi"
+        subtitle="Jan 2020 – Jun 2022 · Porto Alegre, Brasil"
+      >
+        Desenvolvimento de software munido de práticas DevOps — entregando sistemas de
+        backend e a automação ao seu redor.
+      </TimeLineElement>
+      <TimeLineElement
+        title="Desenvolvedor de Software Júnior · NTConsult"
+        subtitle="Jul 2018 – Jan 2020 · Porto Alegre, Brasil"
+      >
+        Início da minha carreira profissional em software, depois de começar
+        construindo backends em Java para um servidor de Minecraft — concorrência,
+        rede de baixa latência e serviços resilientes em tempo real.
       </TimeLineElement>
     </div>
-  </section>
-
-  <!-- Certificações -->
-  <section class="mb-12">
-    <div class="section-head">
-      <div class="icon-tile w-9 h-9 rounded-lg"><Icon name="lucide:award" /></div>
-      <h2 class="text-2xl font-bold">{t('cv.certifications')}</h2>
-    </div>
-    <ul class="cert-list grid gap-2 max-w-xl">
-      <li>
-        <Icon name="lucide:badge-check" class="cert-icon" />
-        <a href="#" target="_blank">Nome da Certificação (com link)</a>
-      </li>
-    </ul>
   </section>
 
   <!-- Habilidades -->
@@ -78,15 +96,3 @@ const t = useTranslations(lang);
   </section>
 
 </BaseLayout>
-
-<style>
-  .cert-list li {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    color: var(--token-text-2);
-  }
-  .cert-icon { width: 1.05rem; height: 1.05rem; color: var(--token-primary); flex-shrink: 0; }
-  .cert-list a { text-decoration: none; transition: color 0.2s ease; }
-  .cert-list a:hover { color: var(--token-primary); }
-</style>

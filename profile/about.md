@@ -68,6 +68,12 @@ that the whole thing stays fast, secure, and trustworthy.
   professional software career after cutting my teeth on Java backends for a
   Minecraft server.
 
+## Education
+
+- **Postgraduate — Leadership for Innovation (Liderança para Inovação)**,
+  Unilasalle.
+- **Bachelor's Degree in Computer Science** — graduated 2023.
+
 ## Bio (short — hero / meta)
 
 Platform engineer and philosopher. I build systems that scale and ask why they

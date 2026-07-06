@@ -33,12 +33,12 @@ const t = useTranslations(lang);
     </div>
     <div class="time-line-container grid gap-4">
       <TimeLineElement
-        title="Title Name"
-        subtitle="[start year] to [end year] at [Study Center Name], [City], [Country]"
+        title="Postgraduate — Leadership for Innovation"
+        subtitle="Unilasalle · Rio Grande do Sul, Brazil"
       />
       <TimeLineElement
-        title="Title Name"
-        subtitle="[start year] to [end year] at [Study Center Name], [City], [Country]"
+        title="Bachelor's Degree in Computer Science"
+        subtitle="Graduated 2023 · Rio Grande do Sul, Brazil"
       />
     </div>
   </section>
@@ -51,42 +51,38 @@ const t = useTranslations(lang);
     </div>
     <div class="time-line-container">
       <TimeLineElement
-        title="Job Title at Project or Company Name"
-        subtitle="From [Start Date] to [End Date] at [Company], [City], [Country]"
+        title="Specialist Platform Engineer · Sicredi"
+        subtitle="Jan 2026 – Present · Rio Grande do Sul, Brazil"
       >
-        Describe a key responsibility, the systems you owned, and the impact you had.
+        Platform engineering, DevOps, and reliability across the software-delivery
+        lifecycle. I design scalable, observable systems end to end — Kubernetes and
+        containers, CI/CD, infrastructure as code, and observability with Prometheus,
+        Grafana, and OpenTelemetry.
       </TimeLineElement>
       <TimeLineElement
-        title="Job Title at Project or Company Name"
-        subtitle="From [Start Date] to [End Date] at [Company], [City], [Country]"
+        title="DevOps Developer / Software Engineer · Sicredi"
+        subtitle="Jun 2022 – Present · Rio Grande do Sul, Brazil"
       >
-        Describe a key responsibility, the systems you owned, and the impact you had.
+        Build automations and applications to manage infrastructure and the full
+        software development lifecycle. Backend services and platform tooling in Java,
+        Kotlin, and Go, running on Kubernetes.
       </TimeLineElement>
       <TimeLineElement
-        title="Job Title at Project or Company Name"
-        subtitle="From [Start Date] to [End Date] at [Company], [City], [Country]"
+        title="DevOps Software Developer · Sicredi"
+        subtitle="Jan 2020 – Jun 2022 · Porto Alegre, Brazil"
       >
-        Describe a key responsibility, the systems you owned, and the impact you had.
+        Software development driven by DevOps practices — shipping backend systems and
+        the automation around them.
+      </TimeLineElement>
+      <TimeLineElement
+        title="Junior Software Developer · NTConsult"
+        subtitle="Jul 2018 – Jan 2020 · Porto Alegre, Brazil"
+      >
+        Started my professional software career, after cutting my teeth building Java
+        backends for a Minecraft server — concurrency, low-latency networking, and
+        resilient real-time services.
       </TimeLineElement>
     </div>
-  </section>
-
-  <!-- Certifications -->
-  <section class="mb-12">
-    <div class="section-head">
-      <div class="icon-tile w-9 h-9 rounded-lg"><Icon name="lucide:award" /></div>
-      <h2 class="text-2xl font-bold">{t('cv.certifications')}</h2>
-    </div>
-    <ul class="cert-list grid gap-2 max-w-xl">
-      <li>
-        <Icon name="lucide:badge-check" class="cert-icon" />
-        <a href="#" target="_blank">Certification Name (with link)</a>
-      </li>
-      <li>
-        <Icon name="lucide:badge-check" class="cert-icon" />
-        <a href="#" target="_blank">Certification Name (with link)</a>
-      </li>
-    </ul>
   </section>
 
   <!-- Skills -->
@@ -100,15 +96,3 @@ const t = useTranslations(lang);
   </section>
 
 </BaseLayout>
-
-<style>
-  .cert-list li {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    color: var(--token-text-2);
-  }
-  .cert-icon { width: 1.05rem; height: 1.05rem; color: var(--token-primary); flex-shrink: 0; }
-  .cert-list a { text-decoration: none; transition: color 0.2s ease; }
-  .cert-list a:hover { color: var(--token-primary); }
-</style>

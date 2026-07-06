@@ -18,6 +18,7 @@ export const ui = {
     // Home — hero
     'home.greeting': "Hey, I'm",
     'home.eyebrow': 'Philosopher · Platform Engineer · Furry Lion',
+    'home.lead': 'I build systems that scale — and ask why they should.',
     'home.bio':
       "Specialist platform engineer, backend software architect, and philosopher at heart. I started out writing Java backends for a Minecraft server and grew into building resilient, scalable systems across a dozen languages and stacks. I still ask the bigger questions — building systems that scale and inspiring others to live with purpose.",
     'home.cta.projects': 'Explore Projects',
@@ -28,6 +29,13 @@ export const ui = {
     'home.facts.location': 'Brazil',
     'home.facts.languages': 'EN · PT',
     'home.facts.focus': 'Platform & Security',
+
+    // Home — stat band
+    'home.stat.years.value': '8+',
+    'home.stat.years.label': 'years building systems',
+    'home.stat.langs.label': 'programming languages',
+    'home.stat.wisdom.value': '∞',
+    'home.stat.wisdom.label': 'pursuit of wisdom',
 
     // Home — tech stack
     'home.tech.eyebrow': 'Tech I build with',
@@ -136,6 +144,7 @@ export const ui = {
     // Home — hero
     'home.greeting': 'Olá, sou',
     'home.eyebrow': 'Filósofo · Engenheiro de Plataforma · Leão Furry',
+    'home.lead': 'Construo sistemas que escalam — e pergunto por que deveriam.',
     'home.bio':
       'Engenheiro de plataforma especialista, arquiteto de software backend e filósofo de coração. Comecei escrevendo backends em Java para um servidor de Minecraft e cresci construindo sistemas resilientes e escaláveis em mais de uma dezena de linguagens e stacks. Continuo fazendo as perguntas maiores — construindo sistemas que escalam e inspirando outros a viver com propósito.',
     'home.cta.projects': 'Ver Projetos',
@@ -146,6 +155,13 @@ export const ui = {
     'home.facts.location': 'Brasil',
     'home.facts.languages': 'EN · PT',
     'home.facts.focus': 'Plataforma & Segurança',
+
+    // Home — stat band
+    'home.stat.years.value': '8+',
+    'home.stat.years.label': 'anos construindo sistemas',
+    'home.stat.langs.label': 'linguagens de programação',
+    'home.stat.wisdom.value': '∞',
+    'home.stat.wisdom.label': 'busca pela sabedoria',
 
     // Home — tech stack
     'home.tech.eyebrow': 'Tecnologias que uso',
