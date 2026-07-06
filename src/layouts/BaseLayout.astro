@@ -3,6 +3,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SideBar from "../components/SideBar.astro";
+import DesignProposalSwitcher from "../components/DesignProposalSwitcher.astro";
 import { ClientRouter } from 'astro:transitions';
 
 import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
@@ -43,6 +44,11 @@ const htmlLang = lang === 'pt' ? 'pt-BR' : 'en';
           if (saved === 'lion-light' || saved === 'lion') {
             document.documentElement.setAttribute('data-theme', saved);
           }
+          var q = new URLSearchParams(location.search).get('design');
+          if (q !== null) { try { localStorage.setItem('dp-design', q); } catch (e) {} }
+          var design = q !== null ? q : localStorage.getItem('dp-design');
+          if (design) document.documentElement.setAttribute('data-design', design);
+          else document.documentElement.removeAttribute('data-design');
         }
         apply();
         document.addEventListener('astro:after-swap', apply);
@@ -99,6 +105,8 @@ const htmlLang = lang === 'pt' ? 'pt-BR' : 'en';
         />
       )}
     </div>
+
+    <DesignProposalSwitcher />
 
     <!-- Particle animation -->
     <script is:inline>
