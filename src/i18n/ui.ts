@@ -17,12 +17,12 @@ export const ui = {
 
     // Home — hero
     'home.greeting': "Hey, I'm",
-    'home.eyebrow': 'Philosopher · Platform Engineer · Furry Lion',
-    'home.lead': 'I build systems that scale — and ask why they should.',
+    'home.eyebrow': 'Idealist · Platform Engineer · Agent of Nova Terra',
+    'home.lead': 'I build systems that scale — and use them to help people.',
     'home.bio':
-      "Specialist platform engineer, backend software architect, and philosopher at heart. I started out writing Java backends for a Minecraft server and grew into building resilient, scalable systems across a dozen languages and stacks. I still ask the bigger questions — building systems that scale and inspiring others to live with purpose.",
+      "An idealist and an agent of Nova Terra. I believe the goal is always people — technology matters most when it serves the practice of good. I build resilient systems that scale, then put them to work making life a little more seamless for the people around me.",
     'home.cta.projects': 'Explore Projects',
-    'home.cta.novatera': 'Novatera.org ✦',
+    'home.cta.novatera': 'Join Nova Terra ✦',
     'home.cta.github': 'GitHub',
     'home.cta.twitter': 'Twitter',
     'home.status': 'Available for new projects',
@@ -143,12 +143,12 @@ export const ui = {
 
     // Home — hero
     'home.greeting': 'Olá, sou',
-    'home.eyebrow': 'Filósofo · Engenheiro de Plataforma · Leão Furry',
-    'home.lead': 'Construo sistemas que escalam — e pergunto por que deveriam.',
+    'home.eyebrow': 'Idealista · Engenheiro de Plataforma · Agente da Nova Terra',
+    'home.lead': 'Construo sistemas que escalam — e os uso para ajudar pessoas.',
     'home.bio':
-      'Engenheiro de plataforma especialista, arquiteto de software backend e filósofo de coração. Comecei escrevendo backends em Java para um servidor de Minecraft e cresci construindo sistemas resilientes e escaláveis em mais de uma dezena de linguagens e stacks. Continuo fazendo as perguntas maiores — construindo sistemas que escalam e inspirando outros a viver com propósito.',
+      'Um idealista e agente da Nova Terra. Acredito que o objetivo é sempre as pessoas — a tecnologia importa mais quando serve à prática do bem. Construo sistemas resilientes que escalam e os coloco a serviço de tornar a vida um pouco mais fluida para as pessoas ao meu redor.',
     'home.cta.projects': 'Ver Projetos',
-    'home.cta.novatera': 'Novatera.org ✦',
+    'home.cta.novatera': 'Junte-se à Nova Terra ✦',
     'home.cta.github': 'GitHub',
     'home.cta.twitter': 'Twitter',
     'home.status': 'Disponível para novos projetos',
