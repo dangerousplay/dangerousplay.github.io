@@ -72,7 +72,7 @@ that the whole thing stays fast, secure, and trustworthy.
 
 - **Postgraduate — Leadership for Innovation (Liderança para Inovação)**,
   Unilasalle.
-- **Bachelor's Degree in Computer Science** — graduated 2023.
+- **Bachelor's Degree in Computer Science** — Unilasalle, graduated 2023.
 
 ## Bio (short — hero / meta)
 
