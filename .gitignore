@@ -20,3 +20,8 @@ pnpm-debug.log*
 
 # Astro
 .astro/
+# IDE
+.idea/
+
+# alt lockfiles (repo uses pnpm)
+bun.lock

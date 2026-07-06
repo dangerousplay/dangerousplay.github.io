@@ -1,0 +1,177 @@
+/* ═══════════════════════════════════════════════════════════════
+   DESIGN PROPOSALS — site-wide skins layered over the committed
+   markup. Activated by `data-design` on <html> (set by the floating
+   Design Proposal Switcher). The default (no attribute) keeps the
+   shipped Lion theme untouched.
+
+   Each proposal re-skins by overriding:
+     · DaisyUI theme vars (--color-*)  → buttons, badges, base
+     · design tokens (--token-*)       → tokened utilities
+     · hardcoded utilities             → .glass-card / glows / shimmer
+   ═══════════════════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,300..600&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300..700&display=swap');
+
+/* ───────────────────────────────────────────────────────────────
+   PROPOSAL 1 · AURORA — violet → magenta with cyan accent.
+   Vibrant modern SaaS. Generous radii, deep slate-violet canvas.
+─────────────────────────────────────────────────────────────── */
+html[data-design="aurora"] {
+  --color-base-100: oklch(13% 0.03 285);
+  --color-base-200: oklch(16% 0.035 285);
+  --color-base-300: oklch(22% 0.04 285);
+  --color-base-content: oklch(94% 0.02 290);
+  --color-primary: oklch(70% 0.19 285);
+  --color-primary-content: oklch(14% 0.03 285);
+  --color-secondary: oklch(72% 0.20 350);
+  --color-secondary-content: oklch(14% 0.03 285);
+  --color-accent: oklch(80% 0.13 200);
+  --radius-box: 1.25rem;
+  --radius-btn: 0.85rem;
+
+  --token-primary: oklch(72% 0.19 285);
+  --token-secondary: oklch(74% 0.20 350);
+  --token-text-1: oklch(95% 0.02 290);
+  --token-text-2: oklch(78% 0.025 290);
+  --token-text-3: oklch(58% 0.03 290);
+  --token-radius-md: 14px;
+  --token-radius-lg: 20px;
+}
+html[data-design="aurora"], html[data-design="aurora"] body {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  background-color: oklch(13% 0.03 285);
+}
+html[data-design="aurora"] body {
+  background-image:
+    radial-gradient(820px 560px at 10% -8%, rgba(150, 90, 255, 0.16), transparent 60%),
+    radial-gradient(760px 520px at 92% 2%, rgba(255, 90, 200, 0.13), transparent 58%),
+    radial-gradient(680px 560px at 50% 116%, rgba(70, 200, 255, 0.10), transparent 60%);
+}
+html[data-design="aurora"] .orb-cyan   { background: radial-gradient(circle, rgba(150, 90, 255, 0.16) 0%, transparent 65%); }
+html[data-design="aurora"] .orb-amber  { background: radial-gradient(circle, rgba(255, 90, 200, 0.13) 0%, transparent 65%); }
+html[data-design="aurora"] .orb-purple { background: radial-gradient(circle, rgba(70, 200, 255, 0.10) 0%, transparent 65%); }
+html[data-design="aurora"] .glass,
+html[data-design="aurora"] .glass-card {
+  background: rgba(28, 20, 48, 0.55);
+  border-color: rgba(170, 120, 255, 0.14);
+}
+html[data-design="aurora"] .glass-card:hover { border-color: rgba(180, 120, 255, 0.40); box-shadow: 0 12px 44px rgba(140, 80, 255, 0.18); }
+html[data-design="aurora"] .glass-card-amber:hover { border-color: rgba(255, 110, 200, 0.42); box-shadow: 0 12px 44px rgba(230, 80, 180, 0.18); }
+html[data-design="aurora"] .glow-cyan-sm { box-shadow: 0 0 24px rgba(150, 90, 255, 0.32); }
+html[data-design="aurora"] .glow-amber-sm { box-shadow: 0 0 24px rgba(255, 90, 200, 0.30); }
+html[data-design="aurora"] .sidebar-glass { background: rgba(20, 14, 38, 0.78) !important; border-right-color: rgba(170, 120, 255, 0.10) !important; }
+html[data-design="aurora"] .shimmer-line {
+  background: linear-gradient(90deg, transparent, rgba(150,90,255,0.15) 30%, rgba(255,90,200,0.5) 50%, rgba(150,90,255,0.15) 70%, transparent);
+  background-size: 200% auto;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   PROPOSAL 2 · TERMINAL — phosphor green on near-black, monospace,
+   sharp corners, engineer/hacker aesthetic.
+─────────────────────────────────────────────────────────────── */
+html[data-design="terminal"] {
+  --color-base-100: oklch(12% 0.012 160);
+  --color-base-200: oklch(15% 0.015 160);
+  --color-base-300: oklch(21% 0.02 160);
+  --color-base-content: oklch(91% 0.03 150);
+  --color-primary: oklch(86% 0.21 152);
+  --color-primary-content: oklch(13% 0.02 160);
+  --color-secondary: oklch(82% 0.16 80);
+  --color-secondary-content: oklch(13% 0.02 160);
+  --color-accent: oklch(86% 0.21 152);
+  --radius-box: 0.25rem;
+  --radius-btn: 0.25rem;
+
+  --token-primary: oklch(86% 0.21 152);
+  --token-secondary: oklch(82% 0.16 80);
+  --token-text-1: oklch(94% 0.04 150);
+  --token-text-2: oklch(78% 0.04 150);
+  --token-text-3: oklch(58% 0.04 150);
+  --token-radius-xs: 2px;
+  --token-radius-sm: 3px;
+  --token-radius-md: 4px;
+  --token-radius-lg: 5px;
+  --token-radius-xl: 6px;
+}
+html[data-design="terminal"],
+html[data-design="terminal"] body { font-family: 'JetBrains Mono', ui-monospace, monospace; background-color: oklch(12% 0.012 160); }
+html[data-design="terminal"] h1, html[data-design="terminal"] h2, html[data-design="terminal"] h3 { font-family: 'JetBrains Mono', monospace; letter-spacing: -0.01em; }
+html[data-design="terminal"] body {
+  background-image:
+    radial-gradient(800px 540px at 12% -8%, rgba(60, 255, 160, 0.10), transparent 60%),
+    radial-gradient(720px 500px at 92% 4%, rgba(230, 200, 70, 0.07), transparent 58%),
+    linear-gradient(rgba(60,255,160,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(60,255,160,0.022) 1px, transparent 1px);
+  background-size: auto, auto, 32px 32px, 32px 32px;
+}
+html[data-design="terminal"] .orb-cyan   { background: radial-gradient(circle, rgba(60, 255, 160, 0.12) 0%, transparent 65%); }
+html[data-design="terminal"] .orb-amber  { background: radial-gradient(circle, rgba(230, 200, 70, 0.08) 0%, transparent 65%); }
+html[data-design="terminal"] .orb-purple { opacity: 0; }
+html[data-design="terminal"] .glass,
+html[data-design="terminal"] .glass-card {
+  background: rgba(8, 20, 14, 0.6);
+  border-color: rgba(60, 255, 160, 0.18);
+  border-radius: 4px;
+  backdrop-filter: blur(8px);
+}
+html[data-design="terminal"] .glass-card:hover { border-color: rgba(60, 255, 160, 0.5); box-shadow: 0 0 0 1px rgba(60,255,160,0.2), 0 8px 30px rgba(0,0,0,0.5); transform: none; }
+html[data-design="terminal"] .glow-cyan-sm { box-shadow: 0 0 18px rgba(60, 255, 160, 0.4); }
+html[data-design="terminal"] .glow-amber-sm { box-shadow: 0 0 18px rgba(230, 200, 70, 0.35); }
+html[data-design="terminal"] .sidebar-glass { background: rgba(7, 16, 11, 0.85) !important; border-right-color: rgba(60, 255, 160, 0.14) !important; }
+html[data-design="terminal"] .shimmer-line {
+  background: linear-gradient(90deg, transparent, rgba(60,255,160,0.2) 30%, rgba(60,255,160,0.6) 50%, rgba(60,255,160,0.2) 70%, transparent);
+  background-size: 200% auto;
+}
+html[data-design="terminal"] .btn { text-transform: lowercase; letter-spacing: 0.02em; }
+
+/* ───────────────────────────────────────────────────────────────
+   PROPOSAL 3 · SANDSTONE — warm paper light, terracotta + slate,
+   serif headings. Calm editorial, regardless of theme toggle.
+─────────────────────────────────────────────────────────────── */
+html[data-design="sand"] {
+  --color-base-100: oklch(96.5% 0.012 78);
+  --color-base-200: oklch(93.5% 0.014 78);
+  --color-base-300: oklch(87% 0.016 70);
+  --color-base-content: oklch(28% 0.03 50);
+  --color-primary: oklch(55% 0.15 42);
+  --color-primary-content: oklch(98% 0.01 80);
+  --color-secondary: oklch(48% 0.07 250);
+  --color-secondary-content: oklch(98% 0.01 250);
+  --color-accent: oklch(55% 0.15 42);
+  --radius-box: 0.75rem;
+  --radius-btn: 0.6rem;
+
+  --token-primary: oklch(52% 0.15 42);
+  --token-secondary: oklch(46% 0.08 250);
+  --token-text-1: oklch(26% 0.03 50);
+  --token-text-2: oklch(40% 0.025 50);
+  --token-text-3: oklch(54% 0.02 55);
+  --token-border: rgba(80, 60, 40, 0.14);
+  --token-border-warm: rgba(180, 90, 50, 0.22);
+}
+html[data-design="sand"],
+html[data-design="sand"] body { font-family: 'Inter', system-ui, sans-serif; background-color: oklch(96.5% 0.012 78); }
+html[data-design="sand"] h1, html[data-design="sand"] h2, html[data-design="sand"] h3 {
+  font-family: 'Fraunces', ui-serif, Georgia, serif; font-weight: 500; letter-spacing: -0.015em;
+}
+html[data-design="sand"] body {
+  background-image:
+    radial-gradient(820px 560px at 12% -8%, rgba(200, 120, 70, 0.10), transparent 56%),
+    radial-gradient(720px 500px at 92% 2%, rgba(90, 110, 180, 0.07), transparent 54%);
+}
+html[data-design="sand"] .orb-cyan   { background: radial-gradient(circle, rgba(90, 110, 180, 0.10) 0%, transparent 65%); }
+html[data-design="sand"] .orb-amber  { background: radial-gradient(circle, rgba(200, 120, 70, 0.12) 0%, transparent 65%); }
+html[data-design="sand"] .orb-purple { opacity: 0; }
+html[data-design="sand"] .glass,
+html[data-design="sand"] .glass-card {
+  background: rgba(255, 252, 247, 0.7);
+  border-color: rgba(90, 65, 40, 0.14);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset, 0 6px 22px rgba(90, 60, 30, 0.08);
+}
+html[data-design="sand"] .glass-card:hover { border-color: rgba(180, 90, 50, 0.4); box-shadow: 0 12px 30px rgba(150, 80, 40, 0.12); }
+html[data-design="sand"] .glow-cyan-sm { box-shadow: 0 0 18px rgba(200, 120, 70, 0.28); }
+html[data-design="sand"] .glow-amber-sm { box-shadow: 0 0 18px rgba(200, 120, 70, 0.28); }
+html[data-design="sand"] .sidebar-glass { background: rgba(252, 248, 242, 0.85) !important; border-right-color: rgba(90, 65, 40, 0.12) !important; }
+html[data-design="sand"] .shimmer-line {
+  background: linear-gradient(90deg, transparent, rgba(180,90,50,0.18) 30%, rgba(180,90,50,0.5) 50%, rgba(180,90,50,0.18) 70%, transparent);
+  background-size: 200% auto;
+}

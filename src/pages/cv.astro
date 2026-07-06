@@ -1,92 +1,98 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import TimeLineElement from "../components/cv/TimeLine.astro";
+import TechStack from "../components/TechStack.astro";
+import { Icon } from "astro-icon/components";
+import { useTranslations } from "../i18n/utils";
+
+const lang = "en";
+const t = useTranslations(lang);
 ---
 
-<BaseLayout title="Resume" sideBarActiveItemID="cv">
-  <div class="mb-5">
-    <div class="text-3xl w-full font-bold">Profile</div>
-  </div>
+<BaseLayout title="Resume — Dangerousplay" sideBarActiveItemID="cv" lang={lang}>
 
-  <div class="mb-10 text-justify">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
-    aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  </div>
+  <section class="mb-10 mt-6">
+    <div class="anim-fade-up eyebrow mb-3">{t('cv.eyebrow')}</div>
+    <h1 class="anim-fade-up-2 text-4xl font-extrabold text-1">{t('cv.title')}</h1>
+  </section>
 
-  <div class="mb-5">
-    <div class="text-3xl w-full font-bold">Education</div>
-  </div>
+  <!-- Profile -->
+  <section class="anim-fade-up-3 mb-12">
+    <div class="section-head">
+      <div class="icon-tile w-9 h-9 rounded-lg"><Icon name="lucide:user-round" /></div>
+      <h2 class="text-2xl font-bold">{t('cv.profile')}</h2>
+    </div>
+    <p class="body-text max-w-2xl">{t('cv.profile.body')}</p>
+  </section>
 
-  <div class="time-line-container grid gap-4 mb-10">
-    <TimeLineElement
-      title="Title Name"
-      subtitle="[start year] to [end year] at [Study Center Name], [City], [Country]"
-    />
-    <TimeLineElement
-      title="Title Name"
-      subtitle="[start year] to [end year] at [Study Center Name], [City], [Country]"
-    />
-  </div>
+  <!-- Education -->
+  <section class="mb-12">
+    <div class="section-head">
+      <div class="icon-tile w-9 h-9 rounded-lg"><Icon name="lucide:graduation-cap" /></div>
+      <h2 class="text-2xl font-bold">{t('cv.education')}</h2>
+    </div>
+    <div class="time-line-container grid gap-4">
+      <TimeLineElement
+        title="Postgraduate — Leadership for Innovation"
+        subtitle="Unilasalle · Rio Grande do Sul, Brazil"
+      />
+      <TimeLineElement
+        title="Bachelor's Degree in Computer Science"
+        subtitle="Unilasalle · Graduated 2023 · Rio Grande do Sul, Brazil"
+      />
+    </div>
+  </section>
 
-  <div class="mb-5">
-    <div class="text-3xl w-full font-bold">Experience</div>
-  </div>
+  <!-- Experience -->
+  <section class="mb-12">
+    <div class="section-head">
+      <div class="icon-tile amber w-9 h-9 rounded-lg"><Icon name="lucide:briefcase" /></div>
+      <h2 class="text-2xl font-bold">{t('cv.experience')}</h2>
+    </div>
+    <div class="time-line-container">
+      <TimeLineElement
+        title="Specialist Platform Engineer · Sicredi"
+        subtitle="Jan 2026 – Present · Rio Grande do Sul, Brazil"
+      >
+        Platform engineering, DevOps, and reliability across the software-delivery
+        lifecycle. I design scalable, observable systems end to end — Kubernetes and
+        containers, CI/CD, infrastructure as code, and observability with Prometheus,
+        Grafana, and OpenTelemetry.
+      </TimeLineElement>
+      <TimeLineElement
+        title="DevOps Developer / Software Engineer · Sicredi"
+        subtitle="Jun 2022 – Present · Rio Grande do Sul, Brazil"
+      >
+        Build automations and applications to manage infrastructure and the full
+        software development lifecycle. Backend services and platform tooling in Java,
+        Kotlin, and Go, running on Kubernetes.
+      </TimeLineElement>
+      <TimeLineElement
+        title="DevOps Software Developer · Sicredi"
+        subtitle="Jan 2020 – Jun 2022 · Porto Alegre, Brazil"
+      >
+        Software development driven by DevOps practices — shipping backend systems and
+        the automation around them.
+      </TimeLineElement>
+      <TimeLineElement
+        title="Junior Software Developer · NTConsult"
+        subtitle="Jul 2018 – Jan 2020 · Porto Alegre, Brazil"
+      >
+        Started my professional software career, after cutting my teeth building Java
+        backends for a Minecraft server — concurrency, low-latency networking, and
+        resilient real-time services.
+      </TimeLineElement>
+    </div>
+  </section>
 
-  <div class="time-line-container mb-10">
-    <TimeLineElement
-      title="Job Title at Project or Company Name"
-      subtitle="From [Start Date] to [End Date] at [Company], [City], [Country]"
-    >
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
-    </TimeLineElement>
-    <TimeLineElement
-      title="Job Title at Project or Company Name"
-      subtitle="From [Start Date] to [End Date] at [Company], [City], [Country]"
-    >
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
-    </TimeLineElement>
-    <TimeLineElement
-      title="Job Title at Project or Company Name"
-      subtitle="From [Start Date] to [End Date] at [Company], [City], [Country]"
-    >
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
-    </TimeLineElement>
-  </div>
+  <!-- Skills -->
+  <section class="mb-8">
+    <div class="section-head">
+      <div class="icon-tile amber w-9 h-9 rounded-lg"><Icon name="lucide:wrench" /></div>
+      <h2 class="text-2xl font-bold">{t('cv.skills')}</h2>
+    </div>
+    <p class="text-sm muted-text mb-6">{t('cv.skills.sub')}</p>
+    <TechStack />
+  </section>
 
-  <div class="mb-5">
-    <div class="text-3xl w-full font-bold">Certifications</div>
-  </div>
-
-  <ul class="list-disc mx-6 mb-10 grid gap-2">
-    <li>
-      <a href="#" target="_blank"> Certification Name (with link)</a>
-    </li>
-    <li>
-      <a href="#" target="_blank"> Certification Name (with link)</a>
-    </li>
-  </ul>
-
-  <div class="mb-5">
-    <div class="text-3xl w-full font-bold">Skills</div>
-  </div>
-
-  <ul class="list-disc md:columns-5 columns-2 mx-6">
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-    <li>Skill Name</li>
-  </ul>
 </BaseLayout>

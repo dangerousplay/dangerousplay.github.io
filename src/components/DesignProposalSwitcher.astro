@@ -1,0 +1,139 @@
+---
+import "../styles/design-proposals.css";
+
+const proposals = [
+  { id: "",         name: "Lion",      hint: "Shipped",  sw: "linear-gradient(135deg,#06d6f0,#e6a52d)" },
+  { id: "aurora",   name: "Aurora",    hint: "Vibrant",  sw: "linear-gradient(135deg,#965aff,#ff5ac8)" },
+  { id: "terminal", name: "Terminal",  hint: "Mono",     sw: "linear-gradient(135deg,#3cffa0,#e6c846)" },
+  { id: "sand",     name: "Sandstone", hint: "Editorial",sw: "linear-gradient(135deg,#c8783c,#5a6eb4)" },
+];
+---
+
+<div id="dp-design-switcher" class="dps">
+  <button class="dps-fab" id="dps-fab" aria-label="Switch design proposal" aria-expanded="false">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="13" r="2.5"/>
+      <circle cx="8.5" cy="17.5" r="2.5"/><circle cx="6" cy="9.5" r="2.5"/>
+    </svg>
+    <span class="dps-fab-label">Design</span>
+  </button>
+
+  <div class="dps-panel" id="dps-panel" role="menu" aria-hidden="true">
+    <p class="dps-title">Design proposals</p>
+    <div class="dps-list">
+      {proposals.map((p) => (
+        <button class="dps-opt" data-design-id={p.id} role="menuitemradio">
+          <span class="dps-sw" style={`background:${p.sw}`}></span>
+          <span class="dps-opt-text">
+            <span class="dps-name">{p.name}</span>
+            <span class="dps-hint">{p.hint}</span>
+          </span>
+          <svg class="dps-check" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </button>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .dps { position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 70; }
+
+  .dps-fab {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.6rem 0.95rem; border-radius: 999px; cursor: pointer;
+    color: var(--token-primary, #06d6f0);
+    background: var(--token-surface-hi, rgba(13,21,40,0.7));
+    border: 1px solid var(--token-border, rgba(255,255,255,0.1));
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    transition: transform 0.18s ease, border-color 0.22s ease;
+  }
+  .dps-fab:hover { transform: translateY(-2px); border-color: var(--token-primary-muted, rgba(6,214,240,0.3)); }
+  .dps-fab-label { font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; }
+
+  .dps-panel {
+    position: absolute; right: 0; bottom: calc(100% + 0.6rem);
+    width: 232px; padding: 0.6rem;
+    border-radius: 16px;
+    background: var(--token-surface-hi, rgba(13,21,40,0.82));
+    border: 1px solid var(--token-border, rgba(255,255,255,0.1));
+    backdrop-filter: blur(22px) saturate(140%);
+    -webkit-backdrop-filter: blur(22px) saturate(140%);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    opacity: 0; transform: translateY(10px) scale(0.97); transform-origin: bottom right;
+    pointer-events: none; transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .dps.open .dps-panel { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
+  .dps-title {
+    font-size: 0.64rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--token-text-3, #8893a5); padding: 0.35rem 0.5rem 0.55rem;
+  }
+  .dps-list { display: flex; flex-direction: column; gap: 0.15rem; }
+  .dps-opt {
+    display: flex; align-items: center; gap: 0.65rem; width: 100%;
+    padding: 0.55rem 0.5rem; border-radius: 10px; cursor: pointer;
+    background: transparent; border: 1px solid transparent; text-align: left;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+  .dps-opt:hover { background: var(--token-primary-soft, rgba(6,214,240,0.1)); }
+  .dps-sw { width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18); }
+  .dps-opt-text { display: flex; flex-direction: column; line-height: 1.15; flex: 1; }
+  .dps-name { font-size: 0.88rem; font-weight: 600; color: var(--token-text-1, #f0e6d0); }
+  .dps-hint { font-size: 0.68rem; color: var(--token-text-3, #8893a5); }
+  .dps-check { color: var(--token-primary, #06d6f0); opacity: 0; flex-shrink: 0; }
+  .dps-opt.active { border-color: var(--token-primary-muted, rgba(6,214,240,0.3)); background: var(--token-primary-soft, rgba(6,214,240,0.1)); }
+  .dps-opt.active .dps-check { opacity: 1; }
+
+  @media (max-width: 520px) { .dps-fab-label { display: none; } }
+</style>
+
+<script is:inline>
+  (function () {
+    var KEY = "dp-design";
+    function applyDesign(id) {
+      if (id) document.documentElement.setAttribute("data-design", id);
+      else document.documentElement.removeAttribute("data-design");
+    }
+    function syncActive() {
+      var cur = localStorage.getItem(KEY) || "";
+      document.querySelectorAll(".dps-opt").forEach(function (o) {
+        o.classList.toggle("active", (o.getAttribute("data-design-id") || "") === cur);
+      });
+    }
+    function init() {
+      var root = document.getElementById("dp-design-switcher");
+      var fab = document.getElementById("dps-fab");
+      if (!root || !fab || fab.dataset.bound) {
+        // still re-apply persisted design after a view transition
+        applyDesign(localStorage.getItem(KEY) || "");
+        return;
+      }
+      fab.dataset.bound = "1";
+      applyDesign(localStorage.getItem(KEY) || "");
+      syncActive();
+
+      fab.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var open = root.classList.toggle("open");
+        fab.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+      root.querySelectorAll(".dps-opt").forEach(function (o) {
+        o.addEventListener("click", function () {
+          var id = o.getAttribute("data-design-id") || "";
+          try { localStorage.setItem(KEY, id); } catch (e) {}
+          applyDesign(id);
+          syncActive();
+          root.classList.remove("open");
+          fab.setAttribute("aria-expanded", "false");
+        });
+      });
+      document.addEventListener("click", function (e) {
+        if (!root.contains(e.target)) { root.classList.remove("open"); fab.setAttribute("aria-expanded", "false"); }
+      });
+    }
+    init();
+    document.addEventListener("astro:after-swap", init);
+  })();
+</script>

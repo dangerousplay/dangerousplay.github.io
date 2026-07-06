@@ -1,7 +1,702 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 @plugin "daisyui";
 @plugin "@tailwindcss/typography";
 
-.time-line-container>div:last-child .education__time>.education__line {
-    display: none;
+/* ─────────────────────────────────────────────────────────────
+   LION NIGHT — dark navy theme inspired by the artwork palette
+   Cyan portal glow × amber moon light × deep navy darkness
+───────────────────────────────────────────────────────────── */
+@plugin "daisyui/theme" {
+  name: "lion";
+  default: true;
+
+  /* Backgrounds — deep navy from philantropy.png */
+  --color-base-100: oklch(11% 0.025 248);   /* #090e1b */
+  --color-base-200: oklch(14% 0.028 248);   /* sidebar/card surfaces */
+  --color-base-300: oklch(18% 0.032 248);   /* borders, dividers */
+  --color-base-content: oklch(92% 0.018 78); /* warm cream text */
+
+  /* Primary — electric cyan (portal glow) */
+  --color-primary: oklch(79% 0.135 200);
+  --color-primary-content: oklch(11% 0.025 248);
+
+  /* Secondary — lion-fur amber / moon glow */
+  --color-secondary: oklch(75% 0.155 68);
+  --color-secondary-content: oklch(11% 0.025 248);
+
+  /* Accent — soft teal */
+  --color-accent: oklch(72% 0.130 195);
+  --color-accent-content: oklch(11% 0.025 248);
+
+  --color-neutral: oklch(20% 0.030 248);
+  --color-neutral-content: oklch(88% 0.018 78);
+
+  --color-info:    oklch(70% 0.13 228);
+  --color-success: oklch(65% 0.17 145);
+  --color-warning: oklch(79% 0.16 75);
+  --color-error:   oklch(62% 0.20 25);
+
+  --radius-box: 0.875rem;
+  --radius-btn: 0.5rem;
 }
+
+/* ── Font ──────────────────────────────────────────────────── */
+html, body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* ── Animated ambient background ──────────────────────────── */
+body {
+  background-color: oklch(11% 0.025 248);
+  overflow-x: hidden;
+}
+
+.ambient-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.orb-cyan {
+  position: absolute;
+  width: 70vw;
+  height: 70vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(6, 214, 240, 0.09) 0%, transparent 65%);
+  top: -25%;
+  right: -20%;
+  animation: orb-drift-a 28s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.orb-amber {
+  position: absolute;
+  width: 55vw;
+  height: 55vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(230, 165, 45, 0.08) 0%, transparent 65%);
+  bottom: -20%;
+  left: -15%;
+  animation: orb-drift-b 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.orb-purple {
+  position: absolute;
+  width: 40vw;
+  height: 40vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(120, 80, 160, 0.06) 0%, transparent 65%);
+  top: 40%;
+  left: 30%;
+  animation: orb-drift-c 32s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes orb-drift-a {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-6vw, 8vh) scale(1.12); }
+}
+@keyframes orb-drift-b {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(7vw, -6vh) scale(1.09); }
+}
+@keyframes orb-drift-c {
+  from { transform: translate(0, 0) scale(0.9); }
+  to   { transform: translate(-4vw, -8vh) scale(1.05); }
+}
+
+/* ── Glass utilities ───────────────────────────────────────── */
+.glass {
+  background: rgba(13, 21, 40, 0.55);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(6, 214, 240, 0.07);
+}
+
+.glass-card {
+  background: rgba(13, 21, 40, 0.50);
+  backdrop-filter: blur(16px) saturate(130%);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+  border: 1px solid rgba(6, 214, 240, 0.10);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(6, 214, 240, 0.22);
+  box-shadow:
+    0 0 0 1px rgba(6, 214, 240, 0.06),
+    0 8px 40px rgba(6, 214, 240, 0.07),
+    0 4px 24px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transform: translateY(-3px);
+}
+
+.glass-card-amber:hover {
+  border-color: rgba(230, 165, 45, 0.25);
+  box-shadow:
+    0 0 0 1px rgba(230, 165, 45, 0.06),
+    0 8px 40px rgba(230, 165, 45, 0.08),
+    0 4px 24px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ── Glow effects ──────────────────────────────────────────── */
+.glow-cyan-sm  { box-shadow: 0 0 12px rgba(6, 214, 240, 0.25); }
+.glow-cyan     { box-shadow: 0 0 24px rgba(6, 214, 240, 0.30), 0 0 48px rgba(6, 214, 240, 0.12); }
+.glow-amber-sm { box-shadow: 0 0 12px rgba(230, 165, 45, 0.25); }
+.glow-amber    { box-shadow: 0 0 24px rgba(230, 165, 45, 0.30), 0 0 48px rgba(230, 165, 45, 0.12); }
+
+.text-glow-cyan  { text-shadow: 0 0 20px rgba(6, 214, 240, 0.5); }
+.text-glow-amber { text-shadow: 0 0 20px rgba(230, 165, 45, 0.5); }
+
+/* ── Pulse animations ──────────────────────────────────────── */
+@keyframes pulse-glow-cyan {
+  0%, 100% { box-shadow: 0 0 16px rgba(6, 214, 240, 0.20); }
+  50%       { box-shadow: 0 0 28px rgba(6, 214, 240, 0.40), 0 0 48px rgba(6, 214, 240, 0.15); }
+}
+@keyframes pulse-glow-amber {
+  0%, 100% { box-shadow: 0 0 16px rgba(230, 165, 45, 0.20); }
+  50%       { box-shadow: 0 0 28px rgba(230, 165, 45, 0.40), 0 0 48px rgba(230, 165, 45, 0.15); }
+}
+.pulse-cyan  { animation: pulse-glow-cyan  3s ease-in-out infinite; }
+.pulse-amber { animation: pulse-glow-amber 3.5s ease-in-out infinite; }
+
+/* ── Fade-in animations ────────────────────────────────────── */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.anim-fade-up    { animation: fade-in-up 0.65s ease both; }
+.anim-fade-up-2  { animation: fade-in-up 0.65s 0.12s ease both; }
+.anim-fade-up-3  { animation: fade-in-up 0.65s 0.24s ease both; }
+.anim-fade-up-4  { animation: fade-in-up 0.65s 0.36s ease both; }
+.anim-fade-up-5  { animation: fade-in-up 0.65s 0.48s ease both; }
+.anim-fade-up-6  { animation: fade-in-up 0.65s 0.60s ease both; }
+.anim-fade       { animation: fade-in 0.8s 0.1s ease both; }
+
+/* ── Shimmer for dividers ──────────────────────────────────── */
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position:  200% center; }
+}
+.shimmer-line {
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(6, 214, 240, 0.15) 30%,
+    rgba(6, 214, 240, 0.4)  50%,
+    rgba(6, 214, 240, 0.15) 70%,
+    transparent 100%
+  );
+  background-size: 200% auto;
+  animation: shimmer 4s linear infinite;
+}
+
+/* ── Badge overrides ───────────────────────────────────────── */
+.badge-cyan {
+  background: rgba(6, 214, 240, 0.12);
+  border: 1px solid rgba(6, 214, 240, 0.25);
+  color: oklch(79% 0.135 200);
+}
+.badge-amber {
+  background: rgba(230, 165, 45, 0.12);
+  border: 1px solid rgba(230, 165, 45, 0.25);
+  color: oklch(75% 0.155 68);
+}
+
+/* ── Sidebar overrides ─────────────────────────────────────── */
+.sidebar-glass {
+  background: rgba(9, 14, 27, 0.75) !important;
+  backdrop-filter: blur(24px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(140%) !important;
+  border-right: 1px solid rgba(6, 214, 240, 0.06) !important;
+}
+
+/* ── Drawer / layout z-index fix ──────────────────────────── */
+.site-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   STUDIO LIGHT — crisp, professional light theme
+   Cool studio-paper white × deep ink slate × refined azure ×
+   golden amber × soft indigo. High-contrast, restrained ambient,
+   frosted-glass surfaces with hairline borders. WCAG-AA text.
+───────────────────────────────────────────────────────────── */
+@plugin "daisyui/theme" {
+  name: "lion-light";
+
+  --color-base-100: oklch(99% 0.004 250);    /* studio paper — clean cool white */
+  --color-base-200: oklch(97% 0.006 250);    /* raised surface */
+  --color-base-300: oklch(90.5% 0.009 255);  /* hairline border */
+  --color-base-content: oklch(27% 0.03 262); /* deep ink slate — crisp */
+
+  --color-primary: oklch(52% 0.135 233);     /* refined azure — WCAG AA */
+  --color-primary-content: oklch(99% 0.01 233);
+
+  --color-secondary: oklch(53% 0.145 55);    /* golden amber — WCAG AA */
+  --color-secondary-content: oklch(99% 0.01 55);
+
+  --color-accent: oklch(54% 0.125 285);      /* soft indigo */
+  --color-accent-content: oklch(99% 0.01 285);
+
+  --color-neutral: oklch(30% 0.025 262);
+  --color-neutral-content: oklch(98% 0.006 250);
+
+  --color-info:    oklch(52% 0.135 233);
+  --color-success: oklch(52% 0.125 155);
+  --color-warning: oklch(62% 0.140 70);
+  --color-error:   oklch(55% 0.180 27);
+
+  --radius-box: 0.875rem;
+  --radius-btn: 0.5rem;
+}
+
+/* ── Light theme overrides ─────────────────────────────────── */
+[data-theme="lion-light"] body {
+  background-color: oklch(99% 0.004 250);
+  background-image:
+    radial-gradient(at 14% -6%, rgba(40, 120, 200, 0.08) 0%, transparent 48%),
+    radial-gradient(at 88% 2%,  rgba(205, 145, 50, 0.055) 0%, transparent 44%),
+    radial-gradient(at 50% 112%, rgba(95, 110, 205, 0.05) 0%, transparent 52%);
+  background-attachment: fixed;
+}
+
+[data-theme="lion-light"] .orb-cyan {
+  background: radial-gradient(circle, rgba(60, 130, 215, 0.12) 0%, transparent 65%);
+  filter: blur(16px);
+}
+[data-theme="lion-light"] .orb-amber {
+  background: radial-gradient(circle, rgba(220, 155, 60, 0.12) 0%, transparent 65%);
+  filter: blur(16px);
+}
+[data-theme="lion-light"] .orb-purple {
+  background: radial-gradient(circle, rgba(120, 120, 220, 0.10) 0%, transparent 65%);
+  filter: blur(18px);
+}
+
+[data-theme="lion-light"] .glass {
+  background: rgba(255, 255, 255, 0.70);
+  border-color: rgba(35, 55, 95, 0.10);
+  backdrop-filter: blur(26px) saturate(135%);
+  -webkit-backdrop-filter: blur(26px) saturate(135%);
+}
+
+[data-theme="lion-light"] .glass-card {
+  background: rgba(255, 255, 255, 0.66);
+  border-color: rgba(35, 55, 95, 0.10);
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 6px 22px rgba(30, 45, 80, 0.07),
+    0 1px 3px rgba(30, 45, 80, 0.05);
+}
+[data-theme="lion-light"] .glass-card:hover {
+  border-color: rgba(40, 120, 200, 0.38);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 12px 34px rgba(40, 90, 170, 0.13),
+    0 0 0 1px rgba(40, 120, 200, 0.10);
+}
+[data-theme="lion-light"] .glass-card-amber:hover {
+  border-color: rgba(205, 140, 45, 0.42);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 12px 34px rgba(190, 130, 40, 0.14),
+    0 0 0 1px rgba(205, 140, 45, 0.10);
+}
+
+[data-theme="lion-light"] .sidebar-glass {
+  background: rgba(255, 255, 255, 0.80) !important;
+  backdrop-filter: blur(30px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(140%) !important;
+  border-right: 1px solid rgba(35, 55, 95, 0.10) !important;
+}
+
+[data-theme="lion-light"] .shimmer-line {
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(40, 120, 200, 0.20) 25%,
+    rgba(205, 145, 50, 0.45) 50%,
+    rgba(95, 110, 205, 0.20) 75%,
+    transparent 100%
+  );
+  background-size: 200% auto;
+}
+
+[data-theme="lion-light"] .badge-cyan {
+  background: rgba(40, 120, 200, 0.10);
+  border-color: rgba(40, 120, 200, 0.30);
+  color: oklch(46% 0.14 235);
+}
+[data-theme="lion-light"] .badge-amber {
+  background: rgba(205, 140, 45, 0.12);
+  border-color: rgba(205, 140, 45, 0.32);
+  color: oklch(48% 0.13 55);
+}
+
+[data-theme="lion-light"] .glow-cyan-sm  { box-shadow: 0 0 12px rgba(40, 120, 200, 0.28); }
+[data-theme="lion-light"] .glow-amber-sm { box-shadow: 0 0 12px rgba(205, 145, 50, 0.30); }
+[data-theme="lion-light"] .glow-cyan  { box-shadow: 0 0 22px rgba(40, 120, 200, 0.30), 0 0 44px rgba(40, 120, 200, 0.12); }
+[data-theme="lion-light"] .glow-amber { box-shadow: 0 0 22px rgba(205, 145, 50, 0.32), 0 0 44px rgba(205, 145, 50, 0.12); }
+[data-theme="lion-light"] .text-glow-cyan  { text-shadow: 0 0 16px rgba(40, 120, 200, 0.38); }
+[data-theme="lion-light"] .text-glow-amber { text-shadow: 0 0 16px rgba(205, 145, 50, 0.38); }
+
+[data-theme="lion-light"] .pulse-cyan {
+  animation: pulse-glow-cyan-light 3s ease-in-out infinite;
+}
+[data-theme="lion-light"] .pulse-amber {
+  animation: pulse-glow-amber-light 3.5s ease-in-out infinite;
+}
+@keyframes pulse-glow-cyan-light {
+  0%, 100% { box-shadow: 0 0 12px rgba(40, 120, 200, 0.20); }
+  50%       { box-shadow: 0 0 22px rgba(40, 120, 200, 0.38), 0 0 38px rgba(40, 120, 200, 0.13); }
+}
+@keyframes pulse-glow-amber-light {
+  0%, 100% { box-shadow: 0 0 12px rgba(205, 145, 50, 0.20); }
+  50%       { box-shadow: 0 0 22px rgba(205, 145, 50, 0.38), 0 0 38px rgba(205, 145, 50, 0.13); }
+}
+
+/* ── Legacy inline-style fallbacks (blog / markdown content) ──
+   Older pages hardcode dark-theme cream text + brand colours inline.
+   On the light bg these are illegible, so bucket each into the new
+   ink-slate / azure / amber palette. Newer pages use --token-* and
+   don't need these. */
+[data-theme="lion-light"] [style*="rgba(240,230,208,0.25)"] { color: oklch(54% 0.016 262) !important; }
+[data-theme="lion-light"] [style*="rgba(240,230,208,0.40)"],
+[data-theme="lion-light"] [style*="rgba(240,230,208,0.45)"] { color: oklch(46% 0.018 262) !important; }
+[data-theme="lion-light"] [style*="rgba(240,230,208,0.55)"],
+[data-theme="lion-light"] [style*="rgba(240,230,208,0.58)"],
+[data-theme="lion-light"] [style*="rgba(240,230,208,0.60)"] { color: oklch(38% 0.022 262) !important; }
+[data-theme="lion-light"] [style*="rgba(240,230,208,0.65)"],
+[data-theme="lion-light"] [style*="rgba(240,230,208,0.68)"],
+[data-theme="lion-light"] [style*="rgba(240,230,208,0.70)"] { color: oklch(30% 0.026 262) !important; }
+[data-theme="lion-light"] [style*="rgba(240,230,208,0.95)"] { color: oklch(24% 0.030 262) !important; }
+
+/* Hardcoded brand tokens used inline — flip to the light palette.
+   Property-specific selectors so a `color:` use isn't overridden as a
+   `background:` (and vice-versa). */
+[data-theme="lion-light"] [style*="color: oklch(79% 0.135 200)"]      { color: oklch(46% 0.14 235) !important; }
+[data-theme="lion-light"] [style*="background: oklch(79% 0.135 200)"] { background: oklch(46% 0.14 235) !important; }
+[data-theme="lion-light"] [style*="color: oklch(75% 0.155 68)"]       { color: oklch(48% 0.13 55) !important; }
+[data-theme="lion-light"] [style*="background: oklch(75% 0.155 68)"]  { background: oklch(48% 0.13 55) !important; }
+
+/* Hardcoded cyan/amber rgba surfaces & borders → azure / amber */
+[data-theme="lion-light"] [style*="background: rgba(6,214,240"]   { background: rgba(40, 120, 200, 0.10) !important; }
+[data-theme="lion-light"] [style*="border: 1px solid rgba(6,214,240,0.22)"],
+[data-theme="lion-light"] [style*="border: 1px solid rgba(6,214,240,0.18)"],
+[data-theme="lion-light"] [style*="border: 1px solid rgba(6,214,240,0.12)"] { border-color: rgba(40, 120, 200, 0.30) !important; }
+[data-theme="lion-light"] [style*="border-color: rgba(6,214,240"]  { border-color: rgba(40, 120, 200, 0.30) !important; }
+
+[data-theme="lion-light"] [style*="background: rgba(230,165,45"]  { background: rgba(205, 140, 45, 0.12) !important; }
+[data-theme="lion-light"] [style*="border: 1px solid rgba(230,165,45,0.20)"],
+[data-theme="lion-light"] [style*="border: 1px solid rgba(230,165,45,0.18)"] { border-color: rgba(205, 140, 45, 0.32) !important; }
+[data-theme="lion-light"] [style*="border-color: rgba(230,165,45"] { border-color: rgba(205, 140, 45, 0.32) !important; }
+
+/* Background hints used as decorative radial gradients */
+[data-theme="lion-light"] [style*="rgba(6,214,240,0.09)"],
+[data-theme="lion-light"] [style*="rgba(6,214,240,0.10)"] { background-color: transparent; }
+[data-theme="lion-light"] [style*="rgba(13,21,40"] { background: rgba(255, 255, 255, 0.55) !important; }
+
+/* ── Floating avatar animation (kept for pages that still use it) ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+.avatar-float {
+  animation: float 8s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ── Hero layout ───────────────────────────────────────────── */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+@media (min-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 260px 1fr;
+    gap: 3rem;
+  }
+}
+
+/* ── Role pills ────────────────────────────────────────────── */
+.role-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.875rem 0;
+}
+.role-pill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.22rem 0.7rem;
+  border-radius: 999px;
+  background: var(--token-primary-soft);
+  border: 1px solid var(--token-primary-muted);
+  color: var(--token-primary);
+  letter-spacing: 0.02em;
+}
+.role-pill.amber {
+  background: var(--token-secondary-soft);
+  border-color: var(--token-secondary-muted);
+  color: var(--token-secondary);
+}
+
+/* ── Timeline ──────────────────────────────────────────────── */
+.time-line-container>div:last-child .education__time>.education__line {
+  display: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   DESIGN TOKENS — semantic CSS custom properties
+   Used by components for consistent, maintainable styling.
+   Override in [data-theme="lion-light"] for the warm version.
+───────────────────────────────────────────────────────────── */
+:root {
+  /* Color — primary (electric cyan) */
+  --token-primary:         oklch(79% 0.135 200);
+  --token-primary-faint:   rgba(6, 214, 240, 0.055);
+  --token-primary-soft:    rgba(6, 214, 240, 0.10);
+  --token-primary-muted:   rgba(6, 214, 240, 0.24);
+
+  /* Color — secondary (lion amber) */
+  --token-secondary:       oklch(75% 0.155 68);
+  --token-secondary-faint: rgba(230, 165, 45, 0.06);
+  --token-secondary-soft:  rgba(230, 165, 45, 0.12);
+  --token-secondary-muted: rgba(230, 165, 45, 0.25);
+
+  /* Surfaces & borders */
+  --token-surface:         rgba(13, 21, 40, 0.50);
+  --token-surface-hi:      rgba(13, 21, 40, 0.70);
+  --token-border:          rgba(6, 214, 240, 0.08);
+  --token-border-warm:     rgba(230, 165, 45, 0.10);
+
+  /* Text hierarchy */
+  --token-text-1:          oklch(92% 0.018 78);   /* headings */
+  --token-text-2:          oklch(72% 0.020 78);   /* body */
+  --token-text-3:          oklch(52% 0.016 78);   /* muted / captions */
+
+  /* Brand-icon contrast floor — how much dark ink is mixed into a
+     brand colour so light logos (Vault/Linux yellow) stay visible.
+     0% on the dark theme; bumped on light. */
+  --token-icon-ink:        #0c1322;
+  --token-icon-ink-mix:    0%;
+
+  /* Radii */
+  --token-radius-xs:       6px;
+  --token-radius-sm:       8px;
+  --token-radius-md:       10px;
+  --token-radius-lg:       16px;
+  --token-radius-xl:       22px;
+  --token-radius-full:     9999px;
+
+  /* Easing curves */
+  --token-ease:            cubic-bezier(0.4, 0, 0.2, 1);
+  --token-ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
+  --token-ease-out:        cubic-bezier(0, 0, 0.2, 1);
+
+  /* Duration */
+  --token-duration-fast:   0.14s;
+  --token-duration-base:   0.24s;
+  --token-duration-slow:   0.40s;
+
+  /* Elevation shadows (dark mode) */
+  --token-shadow-sm:       0 2px 8px  rgba(0,0,0,0.30);
+  --token-shadow-md:       0 4px 20px rgba(0,0,0,0.38);
+  --token-shadow-lg:       0 8px 40px rgba(0,0,0,0.45);
+}
+
+[data-theme="lion-light"] {
+  /* Color — primary (refined azure) */
+  --token-primary:         oklch(46% 0.14 235);
+  --token-primary-faint:   rgba(40, 120, 200, 0.05);
+  --token-primary-soft:    rgba(40, 120, 200, 0.10);
+  --token-primary-muted:   rgba(40, 120, 200, 0.28);
+
+  /* Color — secondary (golden amber) */
+  --token-secondary:       oklch(48% 0.13 55);
+  --token-secondary-faint: rgba(205, 140, 45, 0.05);
+  --token-secondary-soft:  rgba(205, 140, 45, 0.12);
+  --token-secondary-muted: rgba(205, 140, 45, 0.30);
+
+  /* Surfaces & borders — frosted white, cool hairline */
+  --token-surface:         rgba(255, 255, 255, 0.66);
+  --token-surface-hi:      rgba(255, 255, 255, 0.84);
+  --token-border:          rgba(35, 55, 95, 0.12);
+  --token-border-warm:     rgba(205, 140, 45, 0.22);
+
+  /* Text — deep ink-slate hierarchy on studio white */
+  --token-text-1:          oklch(24% 0.030 262);
+  --token-text-2:          oklch(38% 0.022 262);
+  --token-text-3:          oklch(52% 0.016 262);
+
+  /* Deepen brand icons so light logos read on white */
+  --token-icon-ink:        #1b2740;
+  --token-icon-ink-mix:    16%;
+
+  /* Elevation — cool neutral shadows */
+  --token-shadow-sm:       0 2px 10px rgba(30, 45, 80, 0.08);
+  --token-shadow-md:       0 6px 24px rgba(30, 45, 80, 0.10);
+  --token-shadow-lg:       0 14px 48px rgba(30, 45, 80, 0.13);
+}
+
+/* ── Smooth theme transition on body background ── */
+body {
+  transition: background-color var(--token-duration-slow) var(--token-ease);
+}
+
+/* ── Hero avatar (index.astro) ─────────────────────────────── */
+.hero-avatar-float {
+  animation: float 9s ease-in-out infinite;
+  will-change: transform;
+}
+.hero-avatar-frame {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  overflow: hidden;
+  animation: hero-avatar-glow 4.5s ease-in-out infinite;
+}
+.hero-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+@keyframes hero-avatar-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 0 2.5px rgba(230, 165, 45, 0.30),
+      0 0 20px rgba(230, 165, 45, 0.16),
+      0 0 44px rgba(230, 165, 45, 0.06);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px rgba(230, 165, 45, 0.52),
+      0 0 34px rgba(230, 165, 45, 0.30),
+      0 0 64px rgba(230, 165, 45, 0.12);
+  }
+}
+[data-theme="lion-light"] .hero-avatar-frame {
+  animation: hero-avatar-glow-light 4.5s ease-in-out infinite;
+}
+@keyframes hero-avatar-glow-light {
+  0%, 100% {
+    box-shadow:
+      0 0 0 2.5px rgba(240, 150, 110, 0.36),
+      0 0 18px rgba(240, 150, 110, 0.18),
+      0 0 36px rgba(180, 165, 230, 0.10);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px rgba(240, 150, 110, 0.58),
+      0 0 30px rgba(240, 150, 110, 0.30),
+      0 0 56px rgba(180, 165, 230, 0.16);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TOKEN-DRIVEN UTILITIES (theme-safe)
+   Global rules — they read --token-* which flip per [data-theme],
+   so they render correctly in BOTH themes without per-component
+   [data-theme] overrides (which fail inside Astro scoped <style>).
+───────────────────────────────────────────────────────────── */
+.text-1 { color: var(--token-text-1); }
+.text-2 { color: var(--token-text-2); }
+.text-3 { color: var(--token-text-3); }
+.text-brand        { color: var(--token-primary); }
+.text-brand-amber  { color: var(--token-secondary); }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--token-primary);
+}
+.eyebrow::before {
+  content: "";
+  width: 1.6rem;
+  height: 1px;
+  background: var(--token-primary);
+}
+
+.brand-rule { height: 1px; width: 1.5rem; background: var(--token-primary); }
+.brand-rule-amber { height: 1px; width: 1.25rem; background: var(--token-secondary); }
+
+/* Icon tile used in pillars / spotlight / project cards */
+.icon-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--token-radius-md, 10px);
+  border: 1px solid var(--token-border);
+  background: var(--token-primary-soft);
+  color: var(--token-primary);
+}
+.icon-tile.amber {
+  border-color: var(--token-border-warm);
+  background: var(--token-secondary-soft);
+  color: var(--token-secondary);
+}
+.icon-tile svg { width: 55%; height: 55%; }
+
+/* Stat cards (hero) */
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--token-radius-md, 10px);
+  border: 1px solid var(--token-border);
+  background: var(--token-surface);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.stat-value {
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--token-text-1);
+}
+.stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--token-text-3);
+}
+
+/* Section heading row */
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.section-head h2 { color: var(--token-text-1); }
+
+/* Generic muted/body text helper for inline use */
+.body-text { color: var(--token-text-2); line-height: 1.65; }
+.muted-text { color: var(--token-text-3); }

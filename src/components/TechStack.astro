@@ -1,0 +1,21 @@
+---
+import TechGrid from "./TechGrid.astro";
+import { techStack, type Tech } from "../data/tech";
+
+interface Props {
+  title?: string;
+  items?: Tech[];
+}
+const { title, items = techStack } = Astro.props;
+---
+
+{title && (
+  <div class="flex items-center gap-3 mb-5">
+    <div class="h-px w-6" style="background: var(--token-primary);"></div>
+    <h2 class="text-sm font-semibold tracking-[0.18em] uppercase" style="color: var(--token-primary);">
+      {title}
+    </h2>
+  </div>
+)}
+
+<TechGrid items={items} />

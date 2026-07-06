@@ -1,23 +1,142 @@
 ---
 import SideBarFooter from "./SideBarFooter.astro";
-import { Image } from 'astro:assets';
 import SideBarMenu from "./SideBarMenu.astro";
-const { sideBarActiveItemID } = Astro.props;
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+import { Image } from 'astro:assets';
+import type { Lang } from '../i18n/utils';
+
+interface Props {
+  sideBarActiveItemID?: string;
+  lang: Lang;
+  pathname: string;
+}
+const { sideBarActiveItemID, lang, pathname } = Astro.props;
 ---
 
 <div class="drawer-side z-40">
   <label for="my-drawer" class="drawer-overlay"></label>
-  <aside class="px-2 pt-2 h-auto min-h-full w-76 bg-base-200 text-base-content flex flex-col">
-    <div class="w-fit mx-auto mt-5 mb-6">
-      <a href="/">
-        <div class="avatar transition ease-in-out hover:scale-[102%] block m-auto">
-          <div class="w-34">
-            <Image class="mask mask-circle" aspectRatio="1:1" format="webp" width={300} height={300} src="/profile.jpg" alt="Profile image" />
+  <aside class="sidebar-glass px-2 pt-2 h-auto min-h-full w-76 text-base-content flex flex-col">
+
+    <!-- Avatar -->
+    <div class="flex flex-col items-center mt-8 mb-5">
+      <a href={lang === 'pt' ? '/pt/' : '/'} class="dp-avatar-link">
+        <!-- Single clean float wrapper — NO extra absolute circles -->
+        <div class="dp-avatar-float">
+          <div class="dp-avatar-frame">
+            <Image
+              class="dp-avatar-img"
+              aspectRatio="1:1"
+              format="webp"
+              width={300}
+              height={300}
+              src="/profile.jpg"
+              alt="Dangerousplay"
+            />
           </div>
         </div>
       </a>
+
+      <div class="text-center mt-4 space-y-0.5">
+        <div class="text-sm font-bold tracking-wide" style="color: var(--token-secondary, oklch(75% 0.155 68));">
+          Dangerousplay
+        </div>
+        <div class="text-xs opacity-40 tracking-wide">
+          {lang === 'pt' ? 'Filósofo · Engenheiro de Plataforma' : 'Philosopher · Platform Engineer'}
+        </div>
+      </div>
     </div>
-    <SideBarMenu sideBarActiveItemID={sideBarActiveItemID} />
-    <SideBarFooter />
+
+    <div class="shimmer-line mx-4 mb-3"></div>
+
+    <SideBarMenu sideBarActiveItemID={sideBarActiveItemID} lang={lang} />
+
+    <div class="shimmer-line mx-4 mt-2 mb-3"></div>
+
+    <!-- Theme + Language controls -->
+    <div class="flex items-center justify-center gap-2 px-4 pb-3">
+      <ThemeToggle />
+      <LanguageSwitcher lang={lang} pathname={pathname} />
+    </div>
+
+    <SideBarFooter lang={lang} />
   </aside>
 </div>
+
+<style>
+  /* ── Avatar: single clean ring, no extra circles ── */
+  .dp-avatar-link {
+    display: block;
+    text-decoration: none;
+  }
+
+  .dp-avatar-float {
+    animation: dp-float 8s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .dp-avatar-frame {
+    width: 108px;
+    height: 108px;
+    border-radius: 50%;
+    overflow: hidden;
+    /* Single amber glow ring — animates with the glow keyframe */
+    animation: dp-avatar-glow 4s ease-in-out infinite;
+  }
+
+  .dp-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+  }
+
+  /* Soft vertical float */
+  @keyframes dp-float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-6px); }
+  }
+
+  /* Single amber ring pulse — no extra circle layers */
+  @keyframes dp-avatar-glow {
+    0%, 100% {
+      box-shadow:
+        0 0 0 2px rgba(230, 165, 45, 0.28),
+        0 0 14px rgba(230, 165, 45, 0.14),
+        0 0 28px rgba(230, 165, 45, 0.05);
+    }
+    50% {
+      box-shadow:
+        0 0 0 2.5px rgba(230, 165, 45, 0.48),
+        0 0 24px rgba(230, 165, 45, 0.26),
+        0 0 48px rgba(230, 165, 45, 0.10);
+    }
+  }
+
+  [data-theme="lion-light"] .dp-avatar-frame {
+    animation: dp-avatar-glow-light 4s ease-in-out infinite;
+  }
+  @keyframes dp-avatar-glow-light {
+    0%, 100% {
+      box-shadow:
+        0 0 0 2px rgba(240, 150, 110, 0.32),
+        0 0 14px rgba(240, 150, 110, 0.16),
+        0 0 28px rgba(180, 165, 230, 0.08);
+    }
+    50% {
+      box-shadow:
+        0 0 0 2.5px rgba(240, 150, 110, 0.52),
+        0 0 22px rgba(240, 150, 110, 0.26),
+        0 0 44px rgba(180, 165, 230, 0.14);
+    }
+  }
+</style>
+
+<script>
+  function closeDrawerOnNav() {
+    const drawer = document.getElementById('my-drawer') as HTMLInputElement | null;
+    if (drawer) drawer.checked = false;
+  }
+  document.addEventListener('astro:page-load', closeDrawerOnNav);
+</script>
