@@ -1,0 +1,102 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TechGrid from "../../components/TechGrid.astro";
+import { Icon } from "astro-icon/components";
+import { useTranslations } from "../../i18n/utils";
+import {
+  categories,
+  techByCategory,
+  techCounts,
+  type TechCategory,
+} from "../../data/tech";
+
+const lang = "pt";
+const t = useTranslations(lang);
+
+const catIcon: Record<TechCategory, string> = {
+  "Languages": "lucide:code-xml",
+  "Frameworks & Tools": "lucide:blocks",
+  "DevOps": "lucide:server-cog",
+  "Databases": "lucide:database",
+  "Cloud Providers": "lucide:cloud",
+};
+---
+
+<BaseLayout title="Stack — Dangerousplay" sideBarActiveItemID="tech" lang={lang}>
+
+  <!-- Header -->
+  <section class="mb-10 mt-6">
+    <div class="anim-fade-up eyebrow mb-3">{t('tech.eyebrow')}</div>
+    <h1 class="anim-fade-up-2 text-4xl font-extrabold text-1">{t('tech.title')}</h1>
+    <p class="anim-fade-up-3 body-text max-w-2xl mt-4">{t('tech.sub')}</p>
+
+    <!-- Stat rail -->
+    <div class="anim-fade-up-4 stat-rail mt-6">
+      <div class="stat-chip">
+        <span class="stat-num">{techCounts.total}</span>
+        <span class="stat-label">{t('home.tech.count.techs')}</span>
+      </div>
+      <div class="stat-chip">
+        <span class="stat-num">{techCounts.languages}</span>
+        <span class="stat-label">{t('home.tech.count.langs')}</span>
+      </div>
+      <div class="stat-chip">
+        <span class="stat-num">{techCounts.categories}</span>
+        <span class="stat-label">{t('home.tech.count.domains')}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category sections -->
+  {categories.map((cat) => (
+    <section class="mb-12">
+      <div class="section-head">
+        <div class="icon-tile w-9 h-9 rounded-lg"><Icon name={catIcon[cat]} /></div>
+        <h2 class="text-2xl font-bold">{t(`tech.cat.${cat}` as any)}</h2>
+        <span class="cat-count">{techByCategory[cat].length}</span>
+      </div>
+      <TechGrid items={techByCategory[cat]} />
+    </section>
+  ))}
+
+</BaseLayout>
+
+<style>
+  .stat-rail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .stat-chip {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.5rem 0.95rem;
+    border-radius: 999px;
+    border: 1px solid var(--token-border);
+    background: var(--token-primary-soft);
+  }
+  .stat-num {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--token-primary);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--token-text-3);
+  }
+  .cat-count {
+    margin-left: 0.1rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--token-text-3);
+    background: var(--token-surface);
+    border: 1px solid var(--token-border);
+    border-radius: 999px;
+    padding: 0.1rem 0.55rem;
+  }
+</style>

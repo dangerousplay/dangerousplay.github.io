@@ -10,6 +10,7 @@ export const ui = {
     // Navigation
     'nav.home': 'Home',
     'nav.projects': 'Projects',
+    'nav.stack': 'Stack',
     'nav.blog': 'Blog',
     'nav.resume': 'Resume',
     'nav.contact': 'Contact',
@@ -18,7 +19,7 @@ export const ui = {
     'home.greeting': "Hey, I'm",
     'home.eyebrow': 'Philosopher · Platform Engineer · Furry Lion',
     'home.bio':
-      "I believe the pursuit of knowledge and wisdom is one of the most noble things a person can do. Platform engineer by day, philosopher at heart — always asking bigger questions, building systems that scale, and inspiring others to live with purpose.",
+      "Specialist platform engineer, backend software architect, and philosopher at heart. I started out writing Java backends for a Minecraft server and grew into building resilient, scalable systems across a dozen languages and stacks. I still ask the bigger questions — building systems that scale and inspiring others to live with purpose.",
     'home.cta.projects': 'Explore Projects',
     'home.cta.novatera': 'Novatera.org ✦',
     'home.cta.github': 'GitHub',
@@ -31,7 +32,22 @@ export const ui = {
     // Home — tech stack
     'home.tech.eyebrow': 'Tech I build with',
     'home.tech.title': 'A platform-engineering toolkit',
-    'home.tech.sub': 'The tools I reach for to build, secure, and scale systems.',
+    'home.tech.sub': 'A signature few of the tools I reach for to build, secure, and scale systems.',
+    'home.tech.cta': 'Explore the full stack',
+    'home.tech.count.techs': 'technologies',
+    'home.tech.count.langs': 'languages',
+    'home.tech.count.domains': 'domains',
+
+    // Tech / Stack page
+    'tech.eyebrow': 'Everything in the toolbox',
+    'tech.title': 'The full stack',
+    'tech.sub':
+      'From Java backends on a Minecraft server to distributed platforms — the languages, frameworks, and tools I have shipped with across the years.',
+    'tech.cat.Languages': 'Languages',
+    'tech.cat.Frameworks & Tools': 'Frameworks & Tools',
+    'tech.cat.DevOps': 'DevOps',
+    'tech.cat.Databases': 'Databases',
+    'tech.cat.Cloud Providers': 'Cloud Providers',
 
     // Home — Novatera
     'home.novatera.label': 'Current Initiative',
@@ -100,7 +116,7 @@ export const ui = {
     'cv.eyebrow': 'Who I am',
     'cv.profile': 'Profile',
     'cv.profile.body':
-      "Platform engineer and lifelong philosopher. I build infrastructure that scales, secure systems people can trust, and tools that make hard problems approachable. I care about doing good work — and using it to help others live with purpose.",
+      "Specialist platform engineer, backend software engineer & architect, and lifelong philosopher. My path began with Java backends for a Minecraft server — real-time, concurrent, unforgiving — and grew into designing scalable systems across many languages: Java, Kotlin, Go, TypeScript/Node.js, Scala, Python, Rust, and more. I build RESTful, gRPC, and RSocket APIs, real-time WebSocket services, identity and authorization systems (OAuth2/OIDC, SAML, JWT), and event-driven backends on Apache Kafka, backed by MySQL, PostgreSQL, MongoDB, and Redis. On the platform side: Kubernetes, CI/CD, infrastructure as code, and observability with Prometheus, Grafana, and OpenTelemetry. I care about doing good work — and using it to help others live with purpose.",
     'cv.education': 'Education',
     'cv.experience': 'Experience',
     'cv.certifications': 'Certifications',
@@ -112,6 +128,7 @@ export const ui = {
     // Navigation
     'nav.home': 'Início',
     'nav.projects': 'Projetos',
+    'nav.stack': 'Stack',
     'nav.blog': 'Blog',
     'nav.resume': 'Currículo',
     'nav.contact': 'Contato',
@@ -120,7 +137,7 @@ export const ui = {
     'home.greeting': 'Olá, sou',
     'home.eyebrow': 'Filósofo · Engenheiro de Plataforma · Leão Furry',
     'home.bio':
-      'Acredito que a busca pelo conhecimento e pela sabedoria é uma das coisas mais nobres que uma pessoa pode fazer. Engenheiro de plataforma durante o dia, filósofo de coração — sempre fazendo perguntas maiores, construindo sistemas que escalam e inspirando outros a viver com propósito.',
+      'Engenheiro de plataforma especialista, arquiteto de software backend e filósofo de coração. Comecei escrevendo backends em Java para um servidor de Minecraft e cresci construindo sistemas resilientes e escaláveis em mais de uma dezena de linguagens e stacks. Continuo fazendo as perguntas maiores — construindo sistemas que escalam e inspirando outros a viver com propósito.',
     'home.cta.projects': 'Ver Projetos',
     'home.cta.novatera': 'Novatera.org ✦',
     'home.cta.github': 'GitHub',
@@ -133,7 +150,22 @@ export const ui = {
     // Home — tech stack
     'home.tech.eyebrow': 'Tecnologias que uso',
     'home.tech.title': 'Um kit de engenharia de plataforma',
-    'home.tech.sub': 'As ferramentas que uso para construir, proteger e escalar sistemas.',
+    'home.tech.sub': 'Uma seleção das ferramentas que uso para construir, proteger e escalar sistemas.',
+    'home.tech.cta': 'Explorar o stack completo',
+    'home.tech.count.techs': 'tecnologias',
+    'home.tech.count.langs': 'linguagens',
+    'home.tech.count.domains': 'domínios',
+
+    // Tech / Stack page
+    'tech.eyebrow': 'Tudo na caixa de ferramentas',
+    'tech.title': 'O stack completo',
+    'tech.sub':
+      'De backends em Java num servidor de Minecraft a plataformas distribuídas — as linguagens, frameworks e ferramentas com que entreguei ao longo dos anos.',
+    'tech.cat.Languages': 'Linguagens',
+    'tech.cat.Frameworks & Tools': 'Frameworks & Ferramentas',
+    'tech.cat.DevOps': 'DevOps',
+    'tech.cat.Databases': 'Bancos de Dados',
+    'tech.cat.Cloud Providers': 'Provedores de Nuvem',
 
     // Home — Novatera
     'home.novatera.label': 'Iniciativa Atual',
@@ -202,7 +234,7 @@ export const ui = {
     'cv.eyebrow': 'Quem eu sou',
     'cv.profile': 'Perfil',
     'cv.profile.body':
-      'Engenheiro de plataforma e filósofo por vocação. Construo infraestrutura que escala, sistemas seguros nos quais as pessoas podem confiar e ferramentas que tornam problemas difíceis acessíveis. Me importo em fazer um bom trabalho — e usá-lo para ajudar os outros a viver com propósito.',
+      'Engenheiro de plataforma especialista, engenheiro e arquiteto de software backend, e filósofo por vocação. Meu caminho começou com backends em Java para um servidor de Minecraft — em tempo real, concorrente, implacável — e cresceu para o design de sistemas escaláveis em muitas linguagens: Java, Kotlin, Go, TypeScript/Node.js, Scala, Python, Rust e outras. Construo APIs RESTful, gRPC e RSocket, serviços WebSocket em tempo real, sistemas de identidade e autorização (OAuth2/OIDC, SAML, JWT) e backends orientados a eventos com Apache Kafka, apoiados por MySQL, PostgreSQL, MongoDB e Redis. No lado de plataforma: Kubernetes, CI/CD, infraestrutura como código e observabilidade com Prometheus, Grafana e OpenTelemetry. Me importo em fazer um bom trabalho — e usá-lo para ajudar os outros a viver com propósito.',
     'cv.education': 'Educação',
     'cv.experience': 'Experiência',
     'cv.certifications': 'Certificações',

@@ -91,6 +91,18 @@ const lp = (path: string) => localePath(lang, path);
     {t('nav.projects')}
   </a>
 
+  <!-- Stack — layered tiles (the toolbox) -->
+  <a class="nav-item" id="tech" href={lp('/tech/')}>
+    <svg class="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none"
+         stroke="currentColor" stroke-width="1.8"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 2 L21 7 L12 12 L3 7 Z"/>
+      <path d="M3 12 L12 17 L21 12" opacity="0.7"/>
+      <path d="M3 17 L12 22 L21 17" opacity="0.45"/>
+    </svg>
+    {t('nav.stack')}
+  </a>
+
   <!-- Blog — feather quill (philosophy, writing) -->
   <a class="nav-item" id="blog" href={lp('/blog/')}>
     <svg class="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none"

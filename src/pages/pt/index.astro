@@ -5,7 +5,8 @@ import TechStack from "../../components/TechStack.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
-import { useTranslations } from "../../i18n/utils";
+import { useTranslations, localePath } from "../../i18n/utils";
+import { techCounts } from "../../data/tech";
 
 const lang = "pt";
 const t = useTranslations(lang);
@@ -105,6 +106,21 @@ const last_posts = posts.slice(0, 3);
     <h2 class="text-2xl font-bold text-1 mb-1">{t('home.tech.title')}</h2>
     <p class="text-sm muted-text mb-6 max-w-md">{t('home.tech.sub')}</p>
     <TechStack />
+
+    <!-- Full-stack CTA + counts -->
+    <a href={localePath(lang, '/tech/')} class="tech-more-card group">
+      <div class="tech-more-counts">
+        <span><b>{techCounts.total}</b> {t('home.tech.count.techs')}</span>
+        <span class="tech-more-dot">·</span>
+        <span><b>{techCounts.languages}</b> {t('home.tech.count.langs')}</span>
+        <span class="tech-more-dot">·</span>
+        <span><b>{techCounts.categories}</b> {t('home.tech.count.domains')}</span>
+      </div>
+      <span class="tech-more-link">
+        {t('home.tech.cta')}
+        <Icon name="lucide:arrow-right" class="tech-more-arrow" />
+      </span>
+    </a>
   </section>
 
   <!-- ══ NOVATERA ══ -->
@@ -239,6 +255,32 @@ const last_posts = posts.slice(0, 3);
     font-size: 0.78rem; font-weight: 500; color: var(--token-text-3);
   }
   .quick-fact svg { width: 0.95rem; height: 0.95rem; color: var(--token-primary); }
+
+  .tech-more-card {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 0.75rem 1.25rem; margin-top: 1rem; padding: 0.85rem 1.15rem;
+    border-radius: var(--token-radius-md, 12px);
+    border: 1px solid var(--token-border);
+    background: var(--token-surface); text-decoration: none;
+    transition: border-color 0.22s ease, background 0.22s ease, transform 0.22s ease;
+  }
+  .tech-more-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--token-primary-muted);
+    background: var(--token-primary-soft);
+  }
+  .tech-more-counts {
+    display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    font-size: 0.82rem; color: var(--token-text-3);
+  }
+  .tech-more-counts b { color: var(--token-text-1); font-weight: 800; }
+  .tech-more-dot { opacity: 0.4; }
+  .tech-more-link {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.85rem; font-weight: 700; color: var(--token-primary);
+  }
+  .tech-more-arrow { width: 1rem; height: 1rem; transition: transform 0.22s ease; }
+  .tech-more-card:hover .tech-more-arrow { transform: translateX(4px); }
 
   .spotlight-cyan { border-color: var(--token-primary-muted); }
   .spotlight-glow-cyan { background: radial-gradient(circle, var(--token-primary-soft) 0%, transparent 65%); }
