@@ -9,12 +9,24 @@ import rehypeMathjaxChtml from 'rehype-mathjax/chtml'
 
 import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
+import icon from 'astro-icon';
 
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://dangerousplay.github.io',
-  integrations: [mdx(), sitemap(), react()],
+  integrations: [mdx(), sitemap(), react(), icon()],
+  experimental: {
+    rustCompiler: true,
+  },
+
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'pt'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
 
   markdown: {
       remarkPlugins: [remarkMath],

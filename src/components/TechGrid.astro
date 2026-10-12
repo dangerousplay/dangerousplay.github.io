@@ -1,0 +1,83 @@
+---
+import { Icon } from "astro-icon/components";
+import type { Tech } from "../data/tech";
+
+interface Props {
+  items: Tech[];
+}
+const { items } = Astro.props;
+---
+
+<div class="tech-grid">
+  {items.map((tech) => (
+    <div class="tech-tile" style={`--brand:${tech.color}`} title={tech.name}>
+      {tech.icon
+        ? <Icon name={tech.icon} class="tech-tile-icon" />
+        : <img src={tech.source} alt={tech.name} class="tech-tile-icon tech-tile-img" loading="lazy" />}
+      <span class="tech-tile-label">{tech.name}</span>
+    </div>
+  ))}
+</div>
+
+<style>
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    gap: 0.6rem;
+  }
+  .tech-tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 1rem 0.5rem;
+    border-radius: var(--token-radius-md, 10px);
+    border: 1px solid var(--token-border);
+    background:
+      radial-gradient(120% 120% at 50% 0%, color-mix(in srgb, var(--brand) 9%, transparent) 0%, transparent 60%),
+      var(--token-surface);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform var(--token-duration-base) var(--token-ease-spring),
+      border-color var(--token-duration-base) var(--token-ease),
+      box-shadow var(--token-duration-base) var(--token-ease),
+      background var(--token-duration-base) var(--token-ease);
+    cursor: default;
+  }
+  .tech-tile:hover {
+    transform: translateY(-5px);
+    border-color: color-mix(in srgb, var(--brand) 60%, transparent);
+    box-shadow:
+      0 10px 30px color-mix(in srgb, var(--brand) 26%, transparent),
+      inset 0 1px 0 color-mix(in srgb, var(--brand) 14%, transparent);
+  }
+  .tech-tile-icon {
+    width: 2rem;
+    height: 2rem;
+    color: color-mix(in srgb, var(--token-icon-ink) var(--token-icon-ink-mix, 0%), var(--brand));
+    filter: drop-shadow(0 2px 8px color-mix(in srgb, var(--brand) 35%, transparent));
+    transition: transform var(--token-duration-base) var(--token-ease-spring),
+      filter var(--token-duration-base) var(--token-ease);
+  }
+  .tech-tile-img {
+    object-fit: contain;
+  }
+  .tech-tile:hover .tech-tile-icon {
+    transform: scale(1.14);
+    filter: drop-shadow(0 4px 14px color-mix(in srgb, var(--brand) 55%, transparent));
+  }
+  .tech-tile-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--token-text-2);
+    text-align: center;
+    line-height: 1.1;
+    transition: color var(--token-duration-base) var(--token-ease);
+  }
+  .tech-tile:hover .tech-tile-label {
+    color: var(--token-text-1);
+  }
+</style>

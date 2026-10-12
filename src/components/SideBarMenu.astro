@@ -1,22 +1,189 @@
 ---
-const { sideBarActiveItemID } = Astro.props;
-const activeClass = "bg-base-300"; // For primary color replace with `active` class
+import type { Lang } from '../i18n/utils';
+import { useTranslations, localePath } from '../i18n/utils';
+
+interface Props {
+  sideBarActiveItemID?: string;
+  lang: Lang;
+}
+
+const { sideBarActiveItemID, lang } = Astro.props;
+const t = useTranslations(lang);
+const activeClass = 'nav-active';
+
+const lp = (path: string) => localePath(lang, path);
 ---
 
-<ul class="menu grow shrink menu-md overflow-y-auto">
-    <li><a class="py-3 text-base" id="home" href="/">Home</a></li>
-    <li><a class="py-3 text-base" id="blog" href="/blog/">Blog</a></li>
-    <li>
-        <a
-            class="py-3 text-base"
-            href="mailto:dangerousplay715@gmail.com"
-            target="_blank"
-            referrerpolicy="no-referrer-when-downgrade">Contact</a
-        >
-    </li>
-</ul>
+<style>
+  /* Colours read from --token-* so they flip correctly in both themes.
+     (Per-component [data-theme] overrides silently fail inside Astro
+     scoped <style>, so everything theme-dependent goes through tokens.) */
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--token-radius-sm, 8px);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--token-text-2);
+    transition: color 0.22s ease, background 0.22s ease, border-left-color 0.22s ease;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    letter-spacing: 0.01em;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-item:hover {
+    color: var(--token-text-1);
+    background: var(--token-primary-soft);
+    border-left-color: var(--token-primary-muted);
+  }
+  /* Keyboard-only focus ring; no lingering :focus highlight from a click */
+  .nav-item:focus { outline: none; }
+  .nav-item:focus-visible {
+    outline: 2px solid var(--token-primary, oklch(79% 0.135 200));
+    outline-offset: 2px;
+  }
+  .nav-active {
+    color: var(--token-primary) !important;
+    background: var(--token-primary-soft) !important;
+    border-left-color: var(--token-primary) !important;
+  }
+  .nav-icon {
+    flex-shrink: 0;
+    opacity: 0.70;
+    transition: opacity 0.22s ease;
+  }
+  .nav-item:hover .nav-icon,
+  .nav-active .nav-icon { opacity: 1; }
+</style>
 
-<script define:vars={{ sideBarActiveItemID: sideBarActiveItemID, activeClass: activeClass }}>
-const activeItemElem = document.getElementById(sideBarActiveItemID);
-activeItemElem && activeItemElem.classList.add(activeClass);
+<nav
+  class="flex flex-col grow shrink gap-0.5 px-1 overflow-y-auto py-2"
+  data-active-id={sideBarActiveItemID ?? ''}
+>
+
+  <!-- Home — lion paw print (soft, on-brand) -->
+  <a class="nav-item" id="home" href={lp('/')}>
+    <svg class="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+      <!-- Main central pad -->
+      <ellipse cx="12" cy="16.2" rx="3.6" ry="2.75"/>
+      <!-- 4 toe pads in gentle arc -->
+      <circle cx="5.8"  cy="10.8" r="1.55"/>
+      <circle cx="9.8"  cy="8.5"  r="1.7"/>
+      <circle cx="14.2" cy="8.5"  r="1.7"/>
+      <circle cx="18.2" cy="10.8" r="1.55"/>
+    </svg>
+    {t('nav.home')}
+  </a>
+
+  <!-- Projects — sparkle (aspiration, creation) -->
+  <a class="nav-item" id="projects" href={lp('/projects/')}>
+    <svg class="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+      <!-- Large 4-point star -->
+      <path d="M12 2.5 L13.3 9.8 L20.5 11 L13.3 12.2 L12 19.5 L10.7 12.2 L3.5 11 L10.7 9.8 Z"/>
+      <!-- Small sparkle dot top-right -->
+      <circle cx="18.5" cy="4.5" r="1.1" opacity="0.65"/>
+      <!-- Tiny sparkle dot bottom-left -->
+      <circle cx="5"    cy="19"  r="0.85" opacity="0.50"/>
+    </svg>
+    {t('nav.projects')}
+  </a>
+
+  <!-- Stack — layered tiles (the toolbox) -->
+  <a class="nav-item" id="tech" href={lp('/tech/')}>
+    <svg class="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none"
+         stroke="currentColor" stroke-width="1.8"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 2 L21 7 L12 12 L3 7 Z"/>
+      <path d="M3 12 L12 17 L21 12" opacity="0.7"/>
+      <path d="M3 17 L12 22 L21 17" opacity="0.45"/>
+    </svg>
+    {t('nav.stack')}
+  </a>
+
+  <!-- Blog — feather quill (philosophy, writing) -->
+  <a class="nav-item" id="blog" href={lp('/blog/')}>
+    <svg class="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none"
+         stroke="currentColor" stroke-width="1.8"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <!-- Feather body -->
+      <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
+      <!-- Quill shaft -->
+      <line x1="16" y1="8" x2="2" y2="22"/>
+      <!-- Barb lines (soft) -->
+      <line x1="17.5" y1="15" x2="9" y2="15" opacity="0.5"/>
+    </svg>
+    {t('nav.blog')}
+  </a>
+
+  <!-- CV — clean scroll / profile -->
+  <a class="nav-item" id="cv" href={lp('/cv/')}>
+    <svg class="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none"
+         stroke="currentColor" stroke-width="1.8"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <!-- Card body -->
+      <rect x="4" y="2" width="16" height="20" rx="2.5"/>
+      <!-- Name line -->
+      <line x1="8" y1="8"  x2="16" y2="8"/>
+      <!-- Detail lines -->
+      <line x1="8" y1="12" x2="16" y2="12" opacity="0.7"/>
+      <line x1="8" y1="16" x2="13" y2="16" opacity="0.5"/>
+    </svg>
+    {t('nav.resume')}
+  </a>
+
+  <!-- Contact — soft rounded envelope -->
+  <a class="nav-item"
+     href="mailto:dangerousplay715@gmail.com"
+     target="_blank"
+     referrerpolicy="no-referrer-when-downgrade">
+    <svg class="nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none"
+         stroke="currentColor" stroke-width="1.8"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="2" y="4" width="20" height="16" rx="2.5"/>
+      <path d="M2 6.5 L12 13.5 L22 6.5" opacity="0.85"/>
+    </svg>
+    {t('nav.contact')}
+  </a>
+
+</nav>
+
+<script define:vars={{ sideBarActiveItemID, activeClass }}>
+  /* Always read the active item from the freshly-rendered DOM (the new
+     page's <nav> carries data-active-id) instead of the value captured
+     when this script first loaded. With Astro's ClientRouter, this script
+     can re-run per navigation and stale closures from earlier pages would
+     otherwise stamp `nav-active` on multiple items. */
+  function activateNav() {
+    const nav = document.querySelector('nav[data-active-id]');
+    const targetId = nav ? nav.getAttribute('data-active-id') : sideBarActiveItemID;
+
+    document.querySelectorAll('.' + activeClass)
+      .forEach((el) => el.classList.remove(activeClass));
+
+    if (targetId) {
+      const el = document.getElementById(targetId);
+      if (el) el.classList.add(activeClass);
+    }
+  }
+
+  /* Drop :focus on click so the clicked link doesn't stay highlighted
+     after navigation (focus + hover were combining to look "stuck"). */
+  function bindNavBlur() {
+    document.querySelectorAll('.nav-item:not([data-blur-bound])').forEach((el) => {
+      el.setAttribute('data-blur-bound', '1');
+      el.addEventListener('click', () => {
+        requestAnimationFrame(() => el.blur());
+      });
+    });
+  }
+
+  activateNav();
+  bindNavBlur();
+  document.addEventListener('astro:page-load', () => {
+    activateNav();
+    bindNavBlur();
+  });
 </script>

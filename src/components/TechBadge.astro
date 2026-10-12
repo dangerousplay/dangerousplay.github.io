@@ -1,0 +1,55 @@
+---
+import { Icon } from "astro-icon/components";
+import { lookupTech } from "../data/tech";
+
+interface Props {
+  /** Tech name; if it matches the registry it gets a brand icon + colour. */
+  name: string;
+  /** Visual accent when the tech isn't in the registry. */
+  variant?: "cyan" | "amber";
+}
+
+const { name, variant = "cyan" } = Astro.props;
+const tech = lookupTech(name);
+const icon = tech?.icon ?? (variant === "amber" ? "lucide:tag" : "lucide:hash");
+const color = tech?.color;
+---
+
+<span class={`tech-badge tech-badge-${variant}`} style={color ? `--brand:${color}` : undefined}>
+  <Icon name={icon} class="tech-badge-icon" />
+  {name}
+</span>
+
+<style>
+  .tech-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 0.34rem 0.62rem;
+    border-radius: var(--token-radius-full, 9999px);
+    border: 1px solid var(--token-border);
+    background: var(--token-primary-soft);
+    color: var(--token-text-2);
+    letter-spacing: 0.01em;
+    transition: border-color var(--token-duration-base) var(--token-ease),
+      color var(--token-duration-base) var(--token-ease),
+      background var(--token-duration-base) var(--token-ease);
+  }
+  .tech-badge-amber {
+    border-color: var(--token-border-warm);
+    background: var(--token-secondary-soft);
+  }
+  .tech-badge-icon {
+    width: 0.95rem;
+    height: 0.95rem;
+    color: color-mix(in srgb, var(--token-icon-ink) var(--token-icon-ink-mix, 0%), var(--brand, currentColor));
+    flex-shrink: 0;
+  }
+  .tech-badge:hover {
+    color: var(--token-text-1);
+    border-color: var(--brand, var(--token-primary-muted));
+  }
+</style>

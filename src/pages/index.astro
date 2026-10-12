@@ -1,51 +1,413 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HorizontalCard from "../components/HorizontalCard.astro";
+import TechStack from "../components/TechStack.astro";
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+import { useTranslations, localePath } from "../i18n/utils";
+import { techCounts } from "../data/tech";
 
-const posts = (await getCollection("blog")).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const lang = "en";
+const t = useTranslations(lang);
 
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 const last_posts = posts.slice(0, 3);
 ---
 
-<BaseLayout sideBarActiveItemID="home">
-  <div class="pb-12 mt-5">
-    <div class="text-xl py-1">Hey there 👋</div>
-    <div class="text-5xl font-bold">I'm Dangerousplay</div>
-    <div class="text-3xl py-3 font-bold">Philosopher and Devops Engineer</div>
-    <div class="py-2">
-      <text class="text-lg">
-        I'm a philosopher, philanthropist, and programming enthusiast with a passion for helping others. I believe that the pursuit of knowledge and wisdom is one of the most noble and fulfilling pursuits that a person can undertake.
+<BaseLayout sideBarActiveItemID="home" lang={lang}>
 
-        I believe that philosophy has the power to help us make sense of the world around us and to inspire us to live our lives with greater purpose and meaning.
-      </text>
+  <!-- ══════════════════════════════════════════════════════════
+       HERO — split layout: avatar left, text right
+  ══════════════════════════════════════════════════════════ -->
+  <section class="pb-10 mt-4">
+    <div class="hero-grid">
+
+      <!-- Avatar column -->
+      <div class="flex flex-col items-center gap-5 anim-fade-up">
+        <div class="hero-avatar-float">
+          <div class="hero-avatar-frame">
+            <Image
+              src="/profile.jpg"
+              alt="Dangerousplay"
+              width={300}
+              height={300}
+              format="webp"
+              class="hero-avatar-img"
+            />
+          </div>
+        </div>
+
+        <!-- Social links under avatar (desktop only) -->
+        <div class="hidden md:flex items-center gap-2">
+          <a href="https://github.com/dangerousplay" target="_blank"
+             class="social-icon-pill" aria-label="GitHub">
+            <Icon name="simple-icons:github" class="w-3.5 h-3.5" />
+            GitHub
+          </a>
+          <a href="https://twitter.com/dangerousplayt" target="_blank"
+             class="social-icon-pill" aria-label="Twitter">
+            <Icon name="simple-icons:x" class="w-3.5 h-3.5" />
+            Twitter
+          </a>
+        </div>
+      </div>
+
+      <!-- Text column -->
+      <div class="flex flex-col justify-center">
+        <!-- Eyebrow -->
+        <div class="anim-fade-up eyebrow mb-3">{t('home.eyebrow')}</div>
+
+        <!-- Name -->
+        <h1 class="anim-fade-up-2 font-extrabold leading-tight text-1" style="font-size: clamp(2rem, 5vw, 3.4rem);">
+          <span class="opacity-50">{t('home.greeting')}</span><br />
+          <span class="relative inline-block text-brand-amber">
+            Dangerousplay
+            <span
+              class="absolute inset-0 blur-3xl opacity-20 pointer-events-none"
+              style="background: var(--token-secondary);"
+            ></span>
+          </span>
+        </h1>
+
+        <!-- Lead tagline -->
+        <p class="anim-fade-up-3 hero-lead">{t('home.lead')}</p>
+
+        <!-- Bio -->
+        <p class="anim-fade-up-5 text-base body-text max-w-lg">
+          {t('home.bio')}
+        </p>
+
+        <!-- Quick facts -->
+        <div class="anim-fade-up-5 quick-facts">
+          <span class="quick-fact"><Icon name="lucide:map-pin" /> {t('home.facts.location')}</span>
+          <span class="quick-fact"><Icon name="lucide:languages" /> {t('home.facts.languages')}</span>
+          <span class="quick-fact"><Icon name="lucide:shield-check" /> {t('home.facts.focus')}</span>
+        </div>
+
+        <!-- CTAs -->
+        <div class="anim-fade-up-6 mt-6 flex flex-wrap gap-3">
+          <a href="/projects/" class="btn btn-secondary btn-sm pulse-amber font-semibold gap-1.5">
+            <Icon name="lucide:sparkles" class="w-4 h-4" />
+            {t('home.cta.projects')}
+          </a>
+          <a href="https://novatera.org" target="_blank"
+             class="btn btn-primary btn-sm pulse-cyan font-semibold gap-1.5">
+            <Icon name="lucide:globe" class="w-4 h-4" />
+            {t('home.cta.novatera')}
+          </a>
+          <a href="https://github.com/dangerousplay" target="_blank"
+             class="btn btn-ghost btn-sm border border-white/10 hover:border-white/25 md:hidden gap-1.5">
+            <Icon name="simple-icons:github" class="w-4 h-4" />
+            GitHub
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       STAT BAND — meaningful numbers instead of badges
+  ══════════════════════════════════════════════════════════ -->
+  <section class="anim-fade mb-14">
+    <div class="stat-band">
+      <div class="stat-cell">
+        <span class="stat-value text-brand-amber">{t('home.stat.years.value')}</span>
+        <span class="stat-caption">{t('home.stat.years.label')}</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-cell">
+        <span class="stat-value text-brand">{techCounts.languages}</span>
+        <span class="stat-caption">{t('home.stat.langs.label')}</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-cell">
+        <span class="stat-value text-brand-amber">{t('home.stat.wisdom.value')}</span>
+        <span class="stat-caption">{t('home.stat.wisdom.label')}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TECH STACK
+  ══════════════════════════════════════════════════════════ -->
+  <section class="anim-fade mb-12">
+    <div class="shimmer-line mb-8"></div>
+    <div class="eyebrow mb-2">{t('home.tech.eyebrow')}</div>
+    <h2 class="text-2xl font-bold text-1 mb-1">{t('home.tech.title')}</h2>
+    <p class="text-sm muted-text mb-6 max-w-md">{t('home.tech.sub')}</p>
+    <TechStack />
+
+    <!-- Full-stack CTA + counts -->
+    <a href={localePath(lang, '/tech/')} class="tech-more-card group">
+      <div class="tech-more-counts">
+        <span><b>{techCounts.total}</b> {t('home.tech.count.techs')}</span>
+        <span class="tech-more-dot">·</span>
+        <span><b>{techCounts.languages}</b> {t('home.tech.count.langs')}</span>
+        <span class="tech-more-dot">·</span>
+        <span><b>{techCounts.categories}</b> {t('home.tech.count.domains')}</span>
+      </div>
+      <span class="tech-more-link">
+        {t('home.tech.cta')}
+        <Icon name="lucide:arrow-right" class="tech-more-arrow" />
+      </span>
+    </a>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       NOVATERA SPOTLIGHT
+  ══════════════════════════════════════════════════════════ -->
+  <section class="mb-12">
+    <div class="glass-card rounded-2xl p-6 relative overflow-hidden spotlight-cyan">
+      <div class="absolute -top-14 -right-14 w-56 h-56 rounded-full pointer-events-none spotlight-glow-cyan"></div>
+      <div class="flex flex-col md:flex-row md:items-center gap-5 relative z-10">
+        <div class="icon-tile pulse-cyan flex-shrink-0 w-12 h-12 rounded-xl">
+          <Icon name="lucide:globe" />
+        </div>
+        <div class="flex-1">
+          <div class="eyebrow mb-1">{t('home.novatera.label')}</div>
+          <h2 class="text-xl font-bold text-1">Novatera.org</h2>
+          <p class="mt-1.5 text-sm body-text">{t('home.novatera.desc')}</p>
+        </div>
+        <a href="https://novatera.org" target="_blank"
+           class="btn btn-primary btn-sm glow-cyan-sm whitespace-nowrap gap-1.5">
+          {t('home.novatera.cta')}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       PILLARS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-14">
+    <div class="glass-card glass-card-amber rounded-xl p-5">
+      <div class="icon-tile amber w-10 h-10 rounded-lg mb-3"><Icon name="lucide:brain" /></div>
+      <h3 class="font-bold text-base mb-2 text-1">{t('home.pillar1.title')}</h3>
+      <p class="text-sm body-text">{t('home.pillar1.desc')}</p>
+    </div>
+    <div class="glass-card rounded-xl p-5">
+      <div class="icon-tile w-10 h-10 rounded-lg mb-3"><Icon name="lucide:server" /></div>
+      <h3 class="font-bold text-base mb-2 text-1">{t('home.pillar2.title')}</h3>
+      <p class="text-sm body-text">{t('home.pillar2.desc')}</p>
+    </div>
+    <div class="glass-card glass-card-amber rounded-xl p-5">
+      <div class="icon-tile amber w-10 h-10 rounded-lg mb-3"><Icon name="lucide:heart-handshake" /></div>
+      <h3 class="font-bold text-base mb-2 text-1">{t('home.pillar3.title')}</h3>
+      <p class="text-sm body-text">{t('home.pillar3.desc')}</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       LATEST BLOG
+  ══════════════════════════════════════════════════════════ -->
+  <section class="mb-12">
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center gap-3">
+        <div class="brand-rule"></div>
+        <h2 class="text-2xl font-bold text-1">{t('home.blog.title')}</h2>
+      </div>
+      <a href="/blog/" class="text-sm font-medium hover:underline text-brand">{t('home.blog.all')}</a>
     </div>
 
-    <div class="mt-8">
-      <a class="btn" href="https://twitter.com/dangerousplayt" target="_blank">Twitter</a>
-      <a href="https://github.com/dangerousplay" target="_blank" class="btn btn-outline ml-5">
-        Github profile
-      </a>
+    <div class="flex flex-col gap-2">
+      {last_posts.map((post) => (
+        <div class="glass-card rounded-xl overflow-hidden">
+          <HorizontalCard
+            title={post.data.title}
+            img={post.data.heroImage}
+            desc={post.data.description}
+            url={"/blog/" + post.id.replace(/\.[^.]+$/, '')}
+            target="_self"
+            badge={post.data.badge}
+          />
+        </div>
+      ))}
     </div>
-  </div>
+  </section>
 
-  <div>
-    <div class="text-3xl w-full font-bold mb-5 mt-10">Latest from blog</div>
-  </div>
+  <!-- ══════════════════════════════════════════════════════════
+       CONNECT CTA
+  ══════════════════════════════════════════════════════════ -->
+  <section class="mb-8">
+    <div class="glass-card glass-card-amber rounded-2xl p-7 text-center relative overflow-hidden">
+      <div class="absolute inset-0 pointer-events-none spotlight-glow-amber-bottom"></div>
+      <div class="relative z-10">
+        <div class="icon-tile amber w-12 h-12 rounded-xl mx-auto mb-3"><Icon name="lucide:sparkles" /></div>
+        <h2 class="text-xl font-bold text-1 mb-2">{t('home.help.title')}</h2>
+        <p class="text-sm body-text mb-5 max-w-sm mx-auto">{t('home.help.desc')}</p>
+        <div class="flex flex-wrap justify-center gap-3">
+          <a href="mailto:dangerousplay715@gmail.com"
+             class="btn btn-secondary btn-sm glow-amber-sm gap-1.5">
+            <Icon name="lucide:mail" class="w-4 h-4" />
+            {t('home.help.cta')}
+          </a>
+          <a href="https://twitter.com/dangerousplayt" target="_blank"
+             class="btn btn-ghost btn-sm border border-white/10 gap-1.5">
+            <Icon name="simple-icons:x" class="w-4 h-4" />
+            {t('home.help.twitter')}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  {
-    last_posts.map((post) => (
-      <>
-        <HorizontalCard
-          title={post.data.title}
-          img={post.data.heroImage}
-          desc={post.data.description}
-          url={"/blog/" + post.slug}
-          target="_self"
-          badge={post.data.badge}
-        />
-        <div class="divider my-0" />
-      </>
-    ))
-  }
 </BaseLayout>
+
+<style>
+  .social-icon-pill {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.22rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--token-border);
+    background: var(--token-primary-soft);
+    color: var(--token-text-2);
+    text-decoration: none;
+    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  }
+  .social-icon-pill:hover {
+    color: var(--token-text-1);
+    border-color: var(--token-primary-muted);
+  }
+
+  /* Hero lead — the one-line manifesto under the name */
+  .hero-lead {
+    margin-top: 1rem;
+    margin-bottom: 0.9rem;
+    max-width: 30rem;
+    font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--token-text-1);
+    letter-spacing: -0.01em;
+  }
+
+  /* Stat band — meaningful numbers replacing the badge cluster */
+  .stat-band {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    padding: 1.4rem 1.6rem;
+    border-radius: var(--token-radius-lg, 16px);
+    border: 1px solid var(--token-border);
+    background:
+      radial-gradient(120% 140% at 50% 0%, var(--token-primary-soft) 0%, transparent 55%),
+      var(--token-surface);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .stat-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    min-width: 8rem;
+    text-align: center;
+  }
+  .stat-value {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .stat-caption {
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--token-text-3);
+  }
+  .stat-divider {
+    width: 1px;
+    align-self: stretch;
+    background: linear-gradient(to bottom, transparent, var(--token-border), transparent);
+  }
+  @media (max-width: 640px) {
+    .stat-divider { display: none; }
+  }
+
+  /* Quick facts row */
+  .quick-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .quick-fact {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--token-text-3);
+  }
+  .quick-fact svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    color: var(--token-primary);
+  }
+
+  /* Full-stack CTA card under the featured rail */
+  .tech-more-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.25rem;
+    margin-top: 1rem;
+    padding: 0.85rem 1.15rem;
+    border-radius: var(--token-radius-md, 12px);
+    border: 1px solid var(--token-border);
+    background: var(--token-surface);
+    text-decoration: none;
+    transition: border-color 0.22s ease, background 0.22s ease, transform 0.22s ease;
+  }
+  .tech-more-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--token-primary-muted);
+    background: var(--token-primary-soft);
+  }
+  .tech-more-counts {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    color: var(--token-text-3);
+  }
+  .tech-more-counts b { color: var(--token-text-1); font-weight: 800; }
+  .tech-more-dot { opacity: 0.4; }
+  .tech-more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--token-primary);
+  }
+  .tech-more-arrow {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.22s ease;
+  }
+  .tech-more-card:hover .tech-more-arrow { transform: translateX(4px); }
+
+  /* Spotlight decorative glows (token-aware) */
+  .spotlight-cyan { border-color: var(--token-primary-muted); }
+  .spotlight-glow-cyan {
+    background: radial-gradient(circle, var(--token-primary-soft) 0%, transparent 65%);
+  }
+  .spotlight-glow-amber-bottom {
+    background: radial-gradient(ellipse at 50% 110%, var(--token-secondary-soft) 0%, transparent 60%);
+  }
+</style>
