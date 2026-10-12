@@ -12,17 +12,24 @@
 
 ## About me
 
-I'm Davi Henrique, a philosopher, philanthropist at heart, and platform engineer based in Brazil. I build systems that scale, and I keep asking why they should.
+I'm Davi Henrique, a philosopher, philanthropist at heart, and platform engineer from Brazil. I believe the pursuit of knowledge and wisdom is one of the most noble things a person can do, and that it only matters if it's shared.
 
-I started out writing Java backends for a Minecraft server. Thousands of players hammering a service in real time taught me a lot about concurrency, low-latency networking, and resilience. Since then I've worked as a backend engineer and architect, and today I'm a **Specialist Platform Engineer at Sicredi**. My job is automating and building the applications behind the whole software-delivery lifecycle.
+I started out writing Java backends for a Minecraft server, keeping a small world running for thousands of players. Since then I've built and cared for the systems other people depend on. To me, good engineering is a form of service: building environments where applications thrive, tools that free people from toil, and platforms that stay fast, secure, and trustworthy for everyone who uses them.
 
-Outside the terminal I like talking about the nature of reality, the meaning of life, and the ethics of human behavior. Philosophy helps me make sense of the world, and engineering helps me change a small part of it. I want to leave the world more seamless than I found it.
+I also love talking about profound subjects: the nature of reality, the meaning of life, the ethics of how we treat each other. Philosophy helps me understand the world, and engineering lets me change a small part of it. I want to leave the world more seamless than I found it.
+
+### What I believe
+
+- **Knowledge transforms realities.** Learning is how people and communities change their circumstances, so I write and teach in the open.
+- **Technology should serve people.** Systems are worth building when they make someone's life easier, safer, or freer.
+- **Helping others is the point.** I work best alongside others: troubleshooting together, sharing what I know, and lifting others up.
+- **Always trying to be better,** as an engineer, a thinker, and a person.
 
 ### Current initiative — [Novatera.org](https://novatera.org)
 
-Novatera is a philanthropy platform that connects people and inspires good.
+Novatera is a philanthropy platform that connects people and inspires good. It's where I'm putting what I know about building systems to work for the common good.
 
-### What I work with
+### Tools I bring
 
 - **Platform & DevOps**: Kubernetes, containers, Terraform, Ansible, Packer, GitHub and GitLab CI/CD
 - **Observability**: Prometheus, Grafana, OpenTelemetry, Jaeger
@@ -30,21 +37,9 @@ Novatera is a philanthropy platform that connects people and inspires good.
 - **Backend**: Java, Kotlin, Go, Rust, Scala, Groovy, TypeScript/Node.js, Python, C
 - **APIs & data**: REST, gRPC, RSocket, WebSockets, Apache Kafka, PostgreSQL, MySQL, Oracle, MongoDB, Redis
 
-### Experience & education
-
-| Period | Role |
-|---|---|
-| 2026 – now | Specialist Platform Engineer, Sicredi |
-| 2022 – 2026 | DevOps Developer / Software Engineer, Sicredi |
-| 2020 – 2022 | DevOps Software Developer |
-| 2018 – 2020 | Junior Software Developer, NTConsult |
-
-- **Postgraduate**: Leadership for Innovation, Unilasalle
-- **B.Sc. Computer Science**: Unilasalle, 2023
-
 ## About this site
 
-My personal blog and portfolio. I write about platform engineering, distributed systems, security, formal methods, and philosophy. Some posts include interactive demos that run entirely in the browser:
+A place to share what I learn. I write about platform engineering, distributed systems, security, formal methods, and philosophy. Some posts include interactive demos that run entirely in the browser:
 
 - **[Vault policy escalation checker](https://dangerousplay.github.io/blog/vault_policy_escalation/)**: parses HashiCorp Vault HCL policies and checks them for privilege escalation paths with the Z3 SMT solver (WASM).
 - **[Heap Sort](https://dangerousplay.github.io/blog/heap_sort/)**: the algorithm explained, with math rendered by MathJax.
