@@ -1,258 +1,94 @@
-# Astrofy | Personal Porfolio Website Template
+# Dangerousplay — Davi Henrique
 
-![Astrofy | Personal Porfolio Website Template](public/social_img.png)
+**Philosopher · Platform Engineer · Furry Lion**
 
-Astrofy is a free and open-source template for your Personal Portfolio Website built with Astro and TailwindCSS. Create in minutes a website with Blog, CV, Project Section, Store and RSS Feed.
+[![Deploy to GitHub Pages](https://github.com/dangerousplay/dangerousplay.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/dangerousplay/dangerousplay.github.io/actions/workflows/deploy.yml)
 
-## Demo
+🌐 **[dangerousplay.github.io](https://dangerousplay.github.io)** · 🇧🇷 [Português](https://dangerousplay.github.io/pt/)
 
-View a live demo of [Astrofy](https://astrofy-template.netlify.app/)
+![Dangerousplay website preview](public/itemPreview.png)
 
-## Installation
+> *"Knowledge has the power to transform realities."*
 
-Run the following command in your terminal
+## About me
+
+I'm Davi Henrique, a philosopher, philanthropist at heart, and platform engineer from Brazil. I believe the pursuit of knowledge and wisdom is one of the most noble things a person can do, and that it only matters if it's shared.
+
+I started out writing Java backends for a Minecraft server, keeping a small world running for thousands of players. Since then I've built and cared for the systems other people depend on. To me, good engineering is a form of service: building environments where applications thrive, tools that free people from toil, and platforms that stay fast, secure, and trustworthy for everyone who uses them.
+
+I also love talking about profound subjects: the nature of reality, the meaning of life, the ethics of how we treat each other. Philosophy helps me understand the world, and engineering lets me change a small part of it. I want to leave the world more seamless than I found it.
+
+### What I believe
+
+- **Knowledge transforms realities.** Learning is how people and communities change their circumstances, so I write and teach in the open.
+- **Technology should serve people.** Systems are worth building when they make someone's life easier, safer, or freer.
+- **Helping others is the point.** I work best alongside others: troubleshooting together, sharing what I know, and lifting others up.
+- **Always trying to be better,** as an engineer, a thinker, and a person.
+
+### Current initiative — [Novatera.org](https://novatera.org)
+
+Novatera is a philanthropy platform that connects people and inspires good. It's where I'm putting what I know about building systems to work for the common good.
+
+### Tools I bring
+
+- **Platform & DevOps**: Kubernetes, containers, Terraform, Ansible, Packer, GitHub and GitLab CI/CD
+- **Observability**: Prometheus, Grafana, OpenTelemetry, Jaeger
+- **Security**: HashiCorp Vault, OAuth2/OIDC, SAML, JWT, formal methods (Z3)
+- **Backend**: Java, Kotlin, Go, Rust, Scala, Groovy, TypeScript/Node.js, Python, C
+- **APIs & data**: REST, gRPC, RSocket, WebSockets, Apache Kafka, PostgreSQL, MySQL, Oracle, MongoDB, Redis
+
+## About this site
+
+A place to share what I learn. I write about platform engineering, distributed systems, security, formal methods, and philosophy. Some posts include interactive demos that run entirely in the browser:
+
+- **[Vault policy escalation checker](https://dangerousplay.github.io/blog/vault_policy_escalation/)**: parses HashiCorp Vault HCL policies and checks them for privilege escalation paths with the Z3 SMT solver (WASM).
+- **[Heap Sort](https://dangerousplay.github.io/blog/heap_sort/)**: the algorithm explained, with math rendered by MathJax.
+
+### Stack
+
+| Layer | Tech |
+|---|---|
+| Framework | [Astro 6](https://astro.build) |
+| Styling | Tailwind CSS 4, daisyUI 5 |
+| Interactivity | React 19 islands |
+| Content | Markdown + MDX content collections, MathJax |
+| Demos | `z3-solver` (WASM), `hcl2-parser`, `coi-serviceworker` |
+| i18n | English (default) + Portuguese (`/pt`) |
+| Deploy | GitHub Actions → GitHub Pages |
+
+### Running locally
+
+Requires Node.js 20+ and pnpm 10.
 
 ```bash
-npm install
+pnpm install
+pnpm dev       # http://localhost:4321
+pnpm build     # static output in dist/
+pnpm preview
 ```
 
-Once the packages are installed you are ready to run astro. Astro comes with a built-in development server that has everything you need for project development. The astro dev command will start the local development server so that you can see your new website in action for the very first time.
+Pushes to `main` are built and deployed by [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
 
-```bash
-npm run dev
-```
-
-## Tech Stack
-
-- [Astro](https://astro.build)
-- [tailwindcss](https://tailwindcss.com/)
-- [DaisyUI](https://daisyui.com/)
-
-## Project Structure
-
-```php
-├── src/
-│   ├── components/
-│   │   ├── cv/
-│   │   │   ├── TimeLine
-│   │   ├── BaseHead.astro
-│   │   ├── Card.astro
-│   │   ├── Footer.astro
-│   │   ├── Header.astro
-│   │   └── HorizontalCard.astro
-│   │   └── SideBar.astro
-│   │   └── SideBarMenu.astro
-│   │   └── SideBarFooter.astro
-│   ├── content/
-│   │   ├── blog/
-│   │   │   ├── post1.md
-│   │   │   ├── post2.md
-│   │   │   └── post3.md
-│   │   ├── store/
-│   │   │   ├── item1.md
-│   │   │   ├── item2.md
-│   ├── layouts/
-│   │   └── BaseLayout.astro
-│   │   └── PostLayout.astro
-│   └── pages/
-│   │   ├── blog/
-│   │   │   ├── [...page].astro
-│   │   │   ├── [slug].astro
-│   │   └── cv.astro
-│   │   └── index.astro
-│   │   └── projects.astro
-│   │   └── rss.xml.js
-│   └── styles/
-│       └── global.css
-├── public/
-│   ├── favicon.svg
-│   └── social-image.png
-│   └── sprofile.jpg
-│   └── social_img.webp
-├── astro.config.mjs
-├── tailwind.config.cjs
-├── package.json
-└── tsconfig.json
-```
-
-### Components usage
-
-#### Layout Components
-
-The `BaseHead`, `Footer`, `Header` and `SideBar` components are already included in the layout system. To change the website content you can edit the content of this components.
-
-##### SideBar
-
-In the Sidebar you can change your profilePicture, links to all your website pages and your social icons.
-
-You can change your avatar shape using [mask classes](https://daisyui.com/components/mask/).
-
-The used social-icons are SVG form [BoxIcons](https://boxicons.com/) pack. You can replace the icons in the `SideBarFooter` component
-
-To add a new page in the sidebar go to `SideBarMenu` component.
+### Project layout
 
 ```
-<li><a class="py-3 text-base" id="home" href="/">Home</a></li>
-
+src/
+├── components/   # UI components (TechStack, ThemeToggle, cv/TimeLine, vault/…)
+├── content/blog/ # Markdown / MDX posts
+├── data/         # Tech stack data for the home page
+├── i18n/         # EN / PT strings and helpers
+├── layouts/      # Base and post layouts
+└── pages/        # Routes (EN at root, PT under /pt)
+profile/          # Source-of-truth notes about me and the site
+public/           # Static assets, stickers, images
 ```
 
-**Note**: In order to change the sidebar menu's active item, you need to setup the prop `sideBarActiveItemID` in the `BaseLayout` componenet of your new page and add that id to the link in the `SideBarMenu`
+## Get in touch
 
-#### TimeLine
+- GitHub: [@dangerousplay](https://github.com/dangerousplay)
+- X / Twitter: [@dangerousplayt](https://twitter.com/dangerousplayt)
+- Email: [dangerousplay715@gmail.com](mailto:dangerousplay715@gmail.com)
 
-The timeline components are used to conform the CV.
+## Credits
 
-```html
-<div class="time-line-container">
-  <TimeLineElement title="Element Title" subtitle="Subtitle">
-    Content that can contain
-    <div>divs</div>
-    and <span>anything else you want</span>.
-  </TimeLineElement>
-  ...
-</div>
-```
-
-#### Card & HorizontalCard
-
-```html
-<HorizontalCard title="Card Title" img="imge_url" desc="Description" url="Link
-URL" target="Optional link target (_blank default)" badge="Optional badge"
-tags={['Array','of','tags']} />
-```
-
-#### HorizontalCard Shop Item
-
-This compoenet is already included in the Store layout of the template. In case you want to use it in other place this are the props.
-
-```html
-<HorizontalShopItem
-  title="Item Title"
-  img="imge_url"
-  desc="Item description"
-  pricing="current_price"
-  oldPricing="old_price"
-  checkoutUrl="external store checkout url"
-  badge="Optional badge"
-  url="item details url"
-  custom_link="Custom link url"
-  custom_link_label="Cutom link btn label"
-  target="Optional link target (_self default)"
-/>
-```
-
-### Layouts
-
-Include `BaseLayout` in each page you add and `PostLayout` to your post pages.
-
-### Content
-
-You can add a [content collection](https://docs.astro.build/en/guides/content-collections/) in `/content/' folder, you will need add it at config.ts.
-
-#### config.ts
-
-Where you need to define your content collections, we define our content schemas too.
-
-#### Blog
-
-Add your `md` blog post in the `/content/blog/` folder.
-
-##### Post format
-
-Add code with this format in the top of each post file.
-
-```
----
-title: "Post Title"
-description: "Description"
-pubDate: "Post date format(Sep 10 2022)"
-heroImage: "Post Hero Image URL"
----
-```
-
-### Pages
-
-#### Blog
-
-Blog uses Astro's content collection to query post's `md`.
-
-##### [page].astro
-
-The `[page].astro` is the route to work with the paginated post list. You can change there the number of items listed for each page and the pagination button labels.
-
-##### [slug].astro
-
-The `[slug].astro` is the base route for every blog post, you can customize the page layout or behaviour, by default uses `content/blog` for content collection and `PostLayout` as layout.
-
-#### Shop
-
-Add your `md` item in the `/pages/shop/` folder.
-
-##### [page].astro
-
-The `[page].astro` is the route to work with the paginated item list. You can change there the number of items listed for each page and the pagination button labels. The shop will render all `.md` files you incle inside this folder.
-
-##### Item format
-
-Add code with this format in the top of each item file.
-
-```js
----
-title: "Demo Item 1"
-description: "Item description"
-heroImage: "Item img url"
-details: true // show or hide details btn
-custom_link_label: "Custom btn link label"
-custom_link: "Custom btn link"
-pubDate: "Sep 15 2022"
-pricing: "$15"
-oldPricing: "$25.5"
-badge: "Featured"
-checkoutUrl: "https://checkouturl.com/"
----
-```
-
-#### Static pages
-
-The other pages inlcuded in the template are static pages. The `index` page belong to the root page. You can add your pages directly in the `/pages` folder and then add a link to that pages in the `sidebar` component.
-
-Feel free to modify the content included in the pages that the template contains or add the ones you need.
-
-### Theming
-
-For change the template theme change the `data-theme` atribute of the `<html>` tag in `BaseLayout.astro` file.
-
-You can chose among 30 themes available or create your custom theme. See themes available [here](https://daisyui.com/docs/themes/).
-
-## Sitemap
-
-The Sitemap is generated automatically when you build your website in the root of the domain. Please update the `robots.txt` file in the public folder with your site name URL for the Sitemap.
-
-## Deploy
-
-You can deploy your site on your favorite static hosting service such as Vercel, Netlify, GitHub Pages, etc.
-
-The configuration for the deployment varies depending on the platform where you are going to do it. See the [official Astro information](https://docs.astro.build/en/guides/deploy/) to deploy your website.
-
-> **⚠️ CAUTION** </br>
-> The Blog pagination of this template is implemented using dynamic route parameters in its filename and for now this format is incompatible with SSR deploy configs, so please use the default static deploy options for your deployments.
-
-## Contributing
-
-Suggestions and pull requests are welcomed! Feel free to open a discussion or an issue for a new feature request or bug.
-
-One of the best ways of contribute is to grab a [bug report or feature suggestion](https://github.com/manuelernestog/astrofy/issues) that has been marked `accepted` and dig in.
-
-Please be wary of working on issues _not_ marked as `accepted`. Just because someone has created an issue doesn't mean we'll accept a pull request for it.
-
-## License
-
-Astrofy is licensed under the MIT license — see the [LICENSE](https://github.com/manuelernestog/astrofy/blob/main/LICENSE) file for details.
-
-## Contributors
-
-<a href="https://github.com/manuelernestog/astrofy/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=manuelernestog/astrofy" />
-</a>
-
-Made with [contrib.rocks](https://contrib.rocks).
+Originally based on the [Astrofy](https://github.com/manuelernestog/astrofy) template by Manuel Ernesto Garcia, and heavily customized since. Licensed under the MIT license. See [LICENSE](LICENSE).
